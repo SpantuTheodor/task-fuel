@@ -8,6 +8,7 @@ const {
 const User = require('../models/user.js');
 const Task = require('../models/task.js');
 const Board = require('../models/board.js');
+
 const {
     TaskType,
     UserType,
@@ -53,6 +54,17 @@ const RootQuery = new GraphQLObjectType({
             resolve(parent, args) {
                 return Board.findById(args.id);
             }
+        },
+
+        boardsByUserId: {
+            type: new GraphQLList(BoardType),
+            args: {
+                id: {
+                    type: GraphQLID
+                }
+            },
+            resolve(parent, args) {
+                return Board.find({}).find({ownerId: args.id});            }
         },
 
         tasks: {

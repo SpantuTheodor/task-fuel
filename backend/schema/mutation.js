@@ -7,6 +7,12 @@ const {
     GraphQLNonNull,
 } = graphql;
 
+const {
+    GraphQLDate,
+    GraphQLTime,
+    GraphQLDateTime
+} = require('graphql-iso-date');
+
 const User = require('../models/user.js');
 const Task = require('../models/task.js');
 const Board = require('../models/board.js')
@@ -28,15 +34,27 @@ const Mutation = new GraphQLObjectType({
                 description: {
                     type: GraphQLString
                 },
+                startDate: {
+                    type: new GraphQLNonNull(GraphQLDateTime)
+                },
+                endDate: {
+                    type: new GraphQLNonNull(GraphQLDateTime)
+                },
                 assigneeId: {
                     type: new GraphQLNonNull(GraphQLID)
+                },
+                collaboratorIds: {
+                    type: new GraphQLList(GraphQLID)
                 }
             },
             resolve(parent, args) {
                 let task = new Task({
                     name: args.name,
                     description: args.description,
-                    assigneeId: args.assigneeId
+                    startDate: args.startDate,
+                    endDate: args.endDate,
+                    assigneeId: args.assigneeId,
+                    collaboratorIds: args.collaboratorIds
                 });
                 return task.save();
             }
@@ -53,13 +71,15 @@ const Mutation = new GraphQLObjectType({
                 },
                 taskIds: {
                     type: new GraphQLList(GraphQLID)
+                },
+                boardIds: {
+                    type: new GraphQLList(GraphQLID)
                 }
             },
             resolve(parent, args) {
                 let user = new User({
                     name: args.name,
                     password: args.password,
-                    taskIds: args.taskIds,
                     boardIds: args.boardIds
                 });
                 return user.save();

@@ -1,0 +1,20 @@
+@import url("https://cdn.syncfusion.com/ej2/material.css");
+
+#add-task input, textarea {
+    display: block;
+}
+
+textarea {
+    width:400px;
+    height: 200px;
+    max-width: 600px;
+    max-height:400px;
+}
+
+.form-items{
+    margin:auto;
+    margin-bottom: 20px;
+}
+#datetime-picker{
+    width: 400px;
+}

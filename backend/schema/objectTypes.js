@@ -6,9 +6,15 @@ const {
     GraphQLList,
 } = graphql;
 
+const {
+    GraphQLDate,
+    GraphQLTime,
+    GraphQLDateTime
+} = require('graphql-iso-date');
+
 const User = require('../models/user.js');
 const Task = require('../models/task.js');
-
+const Board = require('../models/board.js');
 
 const TaskType = new GraphQLObjectType({
     name: "Task",
@@ -22,10 +28,26 @@ const TaskType = new GraphQLObjectType({
         description: {
             type: GraphQLString
         },
+        startDate: {
+            type: GraphQLDateTime
+        },
+        endDate: {
+            type: GraphQLDateTime
+        },
         assignee: {
             type: UserType,
             resolve(parent, args) {
                 return User.findById(parent.assigneeId);
+            }
+        },
+        collaborators: {
+            type: UserType,
+            resolve(parent, args) {
+                return User.find({
+                    '_id': {
+                        $in: parent.collaboratorIds
+                    }
+                })
             }
         }
     }),
@@ -43,18 +65,14 @@ const UserType = new GraphQLObjectType({
         password: {
             type: GraphQLString
         },
-        tasks: {
-            type: new GraphQLList(TaskType),
-            resolve(parent, args) {
-                return Task.find({
-                    assigneeId: parent.id
-                });
-            }
-        },
         boards: {
             type: new GraphQLList(BoardType),
             resolve(parent, args) {
-                return Board.find({'_id': { $in: parent.userIds}})
+                return Board.find({
+                    '_id': {
+                        $in: parent.boardIds
+                    }
+                })
             }
         }
     })
@@ -72,20 +90,27 @@ const BoardType = new GraphQLObjectType({
         owner: {
             type: UserType,
             resolve(parent, args) {
-                console.log(parent)
                 return User.findById(parent.ownerId);
             }
         },
         users: {
             type: new GraphQLList(UserType),
             async resolve(parent, args) {
-                return await User.find({'_id': { $in: parent.userIds}});
+                return await User.find({
+                    '_id': {
+                        $in: parent.userIds
+                    }
+                });
             }
         },
         tasks: {
             type: new GraphQLList(TaskType),
             async resolve(parent, args) {
-                return await Task.find({'_id': { $in: parent.taskIds}});
+                return await Task.find({
+                    '_id': {
+                        $in: parent.taskIds
+                    }
+                });
             }
 
         }
