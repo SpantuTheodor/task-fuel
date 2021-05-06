@@ -20,7 +20,8 @@ class AddTask extends Component {
     }
 
     submitForm(e){
-        e.preventDefault();    
+        e.preventDefault();
+        console.log(this.props.addTaskMutation)
         this.props.addTaskMutation({
             variables: {
                 name: this.state.name,

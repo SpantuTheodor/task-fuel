@@ -88,6 +88,7 @@ const RootQuery = new GraphQLObjectType({
                 return Board.find({});
             }
         },
+        
     }
 });
 

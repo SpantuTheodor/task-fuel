@@ -118,8 +118,24 @@ const BoardType = new GraphQLObjectType({
     })
 })
 
+const AuthenticationType = new GraphQLObjectType({
+    name: "Authentication",
+    fields: () => ({
+        userId: {
+            type: GraphQLID
+        },
+        accessToken: {
+            type: GraphQLString
+        },
+        refreshToken: {
+            type: GraphQLString
+        }
+    })
+})
+
 module.exports = {
     TaskType,
     UserType,
-    BoardType
+    BoardType,
+    AuthenticationType
 };
