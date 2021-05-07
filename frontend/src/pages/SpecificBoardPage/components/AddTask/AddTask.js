@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { DateTimePickerComponent } from "@syncfusion/ej2-react-calendars";
-import { addTaskMutation, getTasksQuery } from "../../queries/queries";
+import { addTaskMutation, getTasksQuery } from "../../../../queries/queries";
 import { graphql } from "react-apollo";
 import {flowRight as compose} from 'lodash';
 
@@ -19,8 +19,8 @@ class AddTask extends Component {
         }
     }
 
-    submitForm(e){
-        e.preventDefault();
+    submitForm(event){
+        event.preventDefault();
         console.log(this.props.addTaskMutation)
         this.props.addTaskMutation({
             variables: {
@@ -42,11 +42,11 @@ class AddTask extends Component {
             <div>
                 
                 <form id="add-task" onSubmit={ this.submitForm.bind(this) }>
-                        <input className="form-items" type="text" placeholder="Task title" onChange = { (e) => this.setState({name: e.target.value}) } />
-                        <textarea className="form-items" form="add-task" placeholder="Description" onChange = { (e) => this.setState({description: e.target.value}) } />                
+                        <input className="form-items" type="text" placeholder="Task title" onChange = { (event) => this.setState({name: event.target.value}) } />
+                        <textarea className="form-items" form="add-task" placeholder="Description" onChange = { (event) => this.setState({description: event.target.value}) } />                
                     <div className="form-items" id="datetime-picker">
-                        <DateTimePickerComponent id="start-date" onChange = { (e) => { this.setState({startDate: e.target.value}); console.log(this.state.startDate )} } />
-                        <DateTimePickerComponent id="end-date" onChange = { (e) => this.setState({endDate: e.target.value}) } />
+                        <DateTimePickerComponent id="start-date" onChange = { (event) => { this.setState({startDate: event.target.value}); console.log(this.state.startDate )} } />
+                        <DateTimePickerComponent id="end-date" onChange = { (event) => this.setState({endDate: event.target.value}) } />
                     </div>
 
                     <input className="form-items" type="submit" />
@@ -59,5 +59,5 @@ class AddTask extends Component {
 
 export default compose(
     graphql( addTaskMutation, {name: "addTaskMutation"} ),
-    graphql(getTasksQuery, {name: "getTasksQuery"})
+    graphql( getTasksQuery, {name: "getTasksQuery"} )
     ) (AddTask);

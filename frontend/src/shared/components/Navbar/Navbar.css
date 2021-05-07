@@ -10,3 +10,17 @@
     vertical-align: middle;
 
 }
+
+.right-button-anchor{
+    text-decoration: none;
+    color: #707070;
+}
+
+.right-button{
+    position: relative;
+    margin: 0;
+    margin-left: 83%;
+    top: 20px;
+    font-size: 20px;
+    display: inline;
+}

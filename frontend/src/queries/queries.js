@@ -37,4 +37,14 @@ const addTaskMutation = gql`
         }
     }
 `;
-export { getTasksQuery, getBoardsByUserIdQuery,addTaskMutation }
+
+const logInMutation = gql`
+    mutation($name: String!, $password: String!){
+        logIn(name: $name, password: $password){
+            userId
+            accessToken
+        }
+    }
+`;
+
+export { getTasksQuery, getBoardsByUserIdQuery, addTaskMutation, logInMutation }

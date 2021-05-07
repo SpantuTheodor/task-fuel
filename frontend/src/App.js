@@ -1,27 +1,26 @@
 import './App.css';
 
-import TaskGrid from './components/TaskGrid/TaskGrid';
-import AddTask from './components/AddTask/AddTask';
-import Navbar from './shared/components/Navbar/Navbar';
-import LoginForm from './login/components/LoginForm/LoginForm';
-import RegisterForm from './register/components/RegisterForm/RegisterForm';
+import AuthenticationContext from './contexts/authenticationContext';
+import LoginPage from './pages/LoginPage/LoginPage'
+import RegisterPage from './pages/RegisterPage/RegisterPage'
+import SpecificBoardPage from './pages/SpecificBoardPage/SpecificBoardPage'
 
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';import { ApolloProvider } from 'react-apollo';
-import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import { setContext } from '@apollo/client/link/context';
+import { ApolloProvider } from 'react-apollo';
+import { BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
+import React, { Component } from 'react';
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000/graphql',
 });
 
 const authLink = setContext((_, { headers }) => {
-  // get the authentication token from local storage if it exists
-  const token = localStorage.getItem('token');
-  // return the headers to the context so httpLink can read them
+  let accessToken = localStorage.getItem('accessToken')
   return {
     headers: {
       ...headers,
-      authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MDkyYmZhODUzNjIyOTZiMDgwYmEwZDkiLCJuYW1lIjoiSm9ueSIsInBhc3N3b3JkIjoiTmVidW51IiwiaWF0IjoxNjIwMzMyODkyLCJleHAiOjE2MjAzMzY0OTJ9.iLaWYK-McZCYM-X7rIEj90XwZuwux6EAT3M6sdvCGbA`,
+      authorization: `Bearer ${accessToken}`,
     }
   }
 });
@@ -31,28 +30,42 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 });
 
-function App() {
-  return (
-    <Router>
-      <ApolloProvider client = {client}>
-        <div id="app-div">
-          <Navbar />
-          <Switch>
-            <Route exact path="/">
-              <TaskGrid />
-              <AddTask />
-            </Route>
-            <Route path="/login">
-              <LoginForm />
-            </Route>
-            <Route path="/register">
-              <RegisterForm />
-            </Route>
-          </Switch>
-        </div>
-      </ApolloProvider>
-    </Router>
-  );
+class App extends Component{
+
+  state = {
+    accessToken: null,
+    userId: null
+  }
+
+  logIn = (userId, accessToken) => {
+    this.setState({accessToken: accessToken, userId: userId})
+    localStorage.setItem('accessToken', accessToken)
+  }
+
+  logOut = () => {
+    this.setState({accessToken: null, userId: null})
+    localStorage.removeItem('accessToken')
+  }
+
+  render(){
+    return (
+      <Router>
+        <ApolloProvider client = {client}>
+          <AuthenticationContext.Provider value={{accessToken: this.state.accessToken, userId: this.state.userId, logIn: this.logIn, logOut: this.logOut}}>
+            <div id="app-div">
+              <Switch>
+                {!this.state.token && <Redirect from="/" to="/register" exact />}
+                <Route exact path="/board" component={SpecificBoardPage} />
+                <Route exact path="/login" component={LoginPage} />
+                <Route exact path="/register" component={RegisterPage} />
+                <Route path ="/" component={SpecificBoardPage} />
+              </Switch>
+            </div>
+          </AuthenticationContext.Provider>
+        </ApolloProvider>
+      </Router>
+    );
+  }
 }
 
 export default App;

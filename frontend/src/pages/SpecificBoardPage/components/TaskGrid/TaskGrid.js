@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { graphql } from "react-apollo";
-import { getBoardsByUserIdQuery, getTasksQuery } from '../../queries/queries.js';
+import { getBoardsByUserIdQuery, getTasksQuery } from '../../../../queries/queries';
 import {flowRight as compose} from 'lodash';
 import "./TaskGrid.css";
 
