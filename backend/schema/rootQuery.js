@@ -2,6 +2,7 @@ const graphql = require("graphql");
 const {
     GraphQLObjectType,
     GraphQLID,
+    GraphQLString,
     GraphQLList,
 } = graphql;
 
@@ -56,17 +57,6 @@ const RootQuery = new GraphQLObjectType({
             }
         },
 
-        boardsByUserId: {
-            type: new GraphQLList(BoardType),
-            args: {
-                id: {
-                    type: GraphQLID
-                }
-            },
-            resolve(parent, args) {
-                return Board.find({}).find({ownerId: args.id});            }
-        },
-
         tasks: {
             type: new GraphQLList(TaskType),
             resolve(parent, args) {
@@ -89,6 +79,29 @@ const RootQuery = new GraphQLObjectType({
             }
         },
         
+        boardsByUserId: {
+            type: new GraphQLList(BoardType),
+            args: {
+                id: {
+                    type: GraphQLID
+                }
+            },
+            resolve(parent, args) {
+                return Board.find({$or: [ {'ownerId': args.id}, {'userIds': args.id} ] });            
+            }
+        },
+
+        userByUsername: {
+            type: UserType,
+            args: {
+                name: {
+                    type: GraphQLString
+                }
+            },
+            resolve(parent, args) {
+                return User.findOne({'name': args.name});
+            }
+        }
     }
 });
 

@@ -27,7 +27,7 @@ class LoginForm extends Component {
                 password: this.state.password,
             }
         }).then((res) => { 
-                this.context.logIn(res.data.logIn.userId, res.data.logIn.accessToken)
+                this.context.logIn(res.data.logIn.userId, res.data.logIn.username, res.data.logIn.accessToken)
         }).catch((err) => {console.log(err)})
 
     }

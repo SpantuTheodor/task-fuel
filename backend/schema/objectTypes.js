@@ -124,6 +124,9 @@ const AuthenticationType = new GraphQLObjectType({
         userId: {
             type: GraphQLID
         },
+        username: {
+            type: GraphQLString
+        },
         accessToken: {
             type: GraphQLString
         },

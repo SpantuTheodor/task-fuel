@@ -3,6 +3,7 @@ import './App.css';
 import AuthenticationContext from './contexts/authenticationContext';
 import LoginPage from './pages/LoginPage/LoginPage'
 import RegisterPage from './pages/RegisterPage/RegisterPage'
+import DisplayBoardsPage from './pages/DisplayBoardsPage/DisplayBoardsPage'
 import SpecificBoardPage from './pages/SpecificBoardPage/SpecificBoardPage'
 
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
@@ -34,16 +35,17 @@ class App extends Component{
 
   state = {
     accessToken: null,
-    userId: null
+    userId: null,
+    username: null
   }
 
-  logIn = (userId, accessToken) => {
-    this.setState({accessToken: accessToken, userId: userId})
+  logIn = (userId, username, accessToken) => {
+    this.setState({accessToken: accessToken, userId: userId, username: username})
     localStorage.setItem('accessToken', accessToken)
   }
 
   logOut = () => {
-    this.setState({accessToken: null, userId: null})
+    this.setState({accessToken: null, userId: null, username: null})
     localStorage.removeItem('accessToken')
   }
 
@@ -51,10 +53,11 @@ class App extends Component{
     return (
       <Router>
         <ApolloProvider client = {client}>
-          <AuthenticationContext.Provider value={{accessToken: this.state.accessToken, userId: this.state.userId, logIn: this.logIn, logOut: this.logOut}}>
+          <AuthenticationContext.Provider value={{accessToken: this.state.accessToken, userId: this.state.userId, username: this.state.username, logIn: this.logIn, logOut: this.logOut}}>
             <div id="app-div">
               <Switch>
                 {!this.state.token && <Redirect from="/" to="/register" exact />}
+                <Route exact path="/:username/boards" component={({match}) => { return(<DisplayBoardsPage match={match} />)}} />
                 <Route exact path="/board" component={SpecificBoardPage} />
                 <Route exact path="/login" component={LoginPage} />
                 <Route exact path="/register" component={RegisterPage} />

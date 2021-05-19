@@ -21,7 +21,6 @@ class AddTask extends Component {
 
     submitForm(event){
         event.preventDefault();
-        console.log(this.props.addTaskMutation)
         this.props.addTaskMutation({
             variables: {
                 name: this.state.name,

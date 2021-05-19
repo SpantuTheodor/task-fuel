@@ -12,7 +12,7 @@ class Navbar extends Component {
     render(){
         return (
             <div id="navbar">
-                <Link to="/board">
+                <Link to={`/${this.context.username}/boards`}>
                     <svg id="logo" xmlns="http://www.w3.org/2000/svg" width="85" height="52" viewBox="0 0 85 52">
                         <g id="Group_1" data-name="Group 1" transform="translate(-57 -25.906)">
                             <text id="Fuel" transform="translate(60 47.906)" fill="#707070" fontSize="25" fontFamily="Montserrat-Regular, Montserrat" letterSpacing="0.12em"><tspan x="0" y="24">Fuel</tspan></text>

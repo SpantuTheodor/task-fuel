@@ -184,7 +184,7 @@ const Mutation = new GraphQLObjectType({
                 })
 
                 console.log(token);
-                return {userId: user.id, accessToken: token, refreshToken: token}
+                return {userId: user.id, username: args.name, accessToken: token, refreshToken: token}
             }
         }
     }

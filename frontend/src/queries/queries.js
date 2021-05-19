@@ -15,6 +15,15 @@ const getBoardsByUserIdQuery = gql`
         boardsByUserId(id: $id){
             id
             name
+            users {
+                name
+            }
+            tasks {
+                name
+            }
+            owner {
+                name
+            }
         }
     }
 `;
@@ -42,9 +51,17 @@ const logInMutation = gql`
     mutation($name: String!, $password: String!){
         logIn(name: $name, password: $password){
             userId
+            username
             accessToken
         }
     }
 `;
 
-export { getTasksQuery, getBoardsByUserIdQuery, addTaskMutation, logInMutation }
+const getUserByUsernameQuery = gql`
+    query($username: String!){
+        userByUsername(name: $username){
+            id
+        }
+    }`;
+
+export { getTasksQuery, getBoardsByUserIdQuery, getUserByUsernameQuery, addTaskMutation, logInMutation }
