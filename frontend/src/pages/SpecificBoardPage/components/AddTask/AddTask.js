@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { DateTimePickerComponent } from "@syncfusion/ej2-react-calendars";
-import { addTaskMutation, getTasksQuery } from "../../../../queries/queries";
+import { addTaskMutation, getTasksByBoardIdQuery } from "../../../../queries/queries";
 import { graphql } from "react-apollo";
 import {flowRight as compose} from 'lodash';
 
@@ -30,7 +30,7 @@ class AddTask extends Component {
                 assigneeId: "60854bdd09627f692050afbd"
             },
             refetchQueries: [{
-                query: getTasksQuery
+                query: getTasksByBoardIdQuery
             }]
         })
     }
@@ -58,5 +58,5 @@ class AddTask extends Component {
 
 export default compose(
     graphql( addTaskMutation, {name: "addTaskMutation"} ),
-    graphql( getTasksQuery, {name: "getTasksQuery"} )
+    graphql( getTasksByBoardIdQuery, {name: "getTasksByBoardIdQuery"} )
     ) (AddTask);

@@ -16,6 +16,10 @@
     color: #707070;
 }
 
+.right-button-anchor:hover{
+    color: #000000
+}
+
 .right-button{
     position: relative;
     margin: 0;

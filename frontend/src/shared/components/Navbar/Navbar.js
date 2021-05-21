@@ -13,12 +13,22 @@ class Navbar extends Component {
         return (
             <div id="navbar">
                 <Link to={`/${this.context.username}/boards`}>
-                    <svg id="logo" xmlns="http://www.w3.org/2000/svg" width="85" height="52" viewBox="0 0 85 52">
-                        <g id="Group_1" data-name="Group 1" transform="translate(-57 -25.906)">
-                            <text id="Fuel" transform="translate(60 47.906)" fill="#707070" fontSize="25" fontFamily="Montserrat-Regular, Montserrat" letterSpacing="0.12em"><tspan x="0" y="24">Fuel</tspan></text>
-                            <text id="Task" transform="translate(57 25.906)" fill="#f17019" fontSize="25" fontFamily="Montserrat-Bold, Montserrat" fontWeight="700" letterSpacing="0.05em"><tspan x="0" y="24">Task</tspan></text>
-                        </g>
-                    </svg>
+                <svg id="logo" xmlns="http://www.w3.org/2000/svg" width="49" height="44" viewBox="0 0 39 34">
+                    <rect id="Rectangle_1" data-name="Rectangle 1" width="20" height="5" transform="translate(1)"/>
+                    <rect id="Rectangle_2" data-name="Rectangle 2" width="12" height="5" transform="translate(0 12) rotate(-90)"/>
+                    <rect id="Rectangle_3" data-name="Rectangle 3" width="12" height="5" transform="translate(0 7)"/>
+                    <rect id="Rectangle_4" data-name="Rectangle 4" width="21" height="5" transform="translate(14 7) rotate(90)"/>
+                    <rect id="Rectangle_5" data-name="Rectangle 5" width="34" height="5" transform="translate(21) rotate(90)"/>
+                    <rect id="Rectangle_6" data-name="Rectangle 6" width="26" height="5" transform="translate(28 8) rotate(90)"/>
+                    <rect id="Rectangle_7" data-name="Rectangle 7" width="5" height="5" transform="translate(30 14)"/>
+                    <rect id="Rectangle_9" data-name="Rectangle 9" width="15" height="5" transform="translate(23 7)"/>
+                    <rect id="Rectangle_11" data-name="Rectangle 11" width="15" height="5" transform="translate(23)"/>
+                    <rect id="Rectangle_12" data-name="Rectangle 12" width="12" height="5" transform="translate(34 12) rotate(-90)"/>
+                </svg>
+
+
+
+
                 </Link>
 
                 {!this.context.accessToken && 

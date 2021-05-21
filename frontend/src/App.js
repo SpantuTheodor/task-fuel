@@ -49,6 +49,10 @@ class App extends Component{
     localStorage.removeItem('accessToken')
   }
 
+  componentDidMount(){
+    document.title = "task-fuel"
+  }
+  
   render(){
     return (
       <Router>
@@ -58,7 +62,7 @@ class App extends Component{
               <Switch>
                 {!this.state.token && <Redirect from="/" to="/register" exact />}
                 <Route exact path="/:username/boards" component={({match}) => { return(<DisplayBoardsPage match={match} />)}} />
-                <Route exact path="/board" component={SpecificBoardPage} />
+                <Route exact path="/:username/board/:boardId" component={({match}) => { return(<SpecificBoardPage match={match} />)}} />
                 <Route exact path="/login" component={LoginPage} />
                 <Route exact path="/register" component={RegisterPage} />
                 <Route path ="/" component={SpecificBoardPage} />

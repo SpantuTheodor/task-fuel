@@ -49,6 +49,15 @@ const TaskType = new GraphQLObjectType({
                     }
                 })
             }
+        },
+        board: {
+            type: BoardType,
+            resolve(parent, args) {
+                console.log(parent)
+                return Board.findOne({
+                    '_id': parent.boardId
+                })
+            }
         }
     }),
 });

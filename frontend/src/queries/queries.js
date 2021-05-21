@@ -1,15 +1,5 @@
 import { gql } from "apollo-boost";
 
-const getTasksQuery = gql`
-    {
-        tasks{
-            id
-            name
-            description
-        }
-    }
-`;
-
 const getBoardsByUserIdQuery = gql`
     query($id: ID!){
         boardsByUserId(id: $id){
@@ -62,6 +52,24 @@ const getUserByUsernameQuery = gql`
         userByUsername(name: $username){
             id
         }
-    }`;
+    }
+`;
 
-export { getTasksQuery, getBoardsByUserIdQuery, getUserByUsernameQuery, addTaskMutation, logInMutation }
+const getTasksByBoardIdQuery = gql`
+    query($id: ID!){
+        tasksByBoardId(id: $id){
+            id
+            name
+            description
+            board {
+                id
+            }
+            assignee {
+                id
+                name
+            }
+        }
+    }
+`;
+
+export { getTasksByBoardIdQuery, getBoardsByUserIdQuery, getUserByUsernameQuery, addTaskMutation, logInMutation }

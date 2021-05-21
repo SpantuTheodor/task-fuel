@@ -6,6 +6,7 @@ import BoardCard from "../BoardCard/BoardCard"
 
 import React, { Component } from "react"
 import { withApollo } from "react-apollo";
+import { Link } from 'react-router-dom'
 
 
 class BoardsGrid extends Component {
@@ -14,6 +15,7 @@ class BoardsGrid extends Component {
         super(props)
         this.state = {
             userId: null,
+            username: null,
             boards: []
         }
         this.getUserIdByUsername = this.getUserIdByUsername.bind(this)
@@ -22,7 +24,7 @@ class BoardsGrid extends Component {
 
     static contextType = AuthenticationContext
     
-    componentWillMount(){
+    componentDidMount(){
         this.getUserIdByUsername()
     }
 
@@ -33,7 +35,7 @@ class BoardsGrid extends Component {
                 username: this.props.username
             }
         }).then((res) => {
-            this.setState({userId: res.data.userByUsername.id})
+            this.setState({userId: res.data.userByUsername.id, username: this.props.username})
         }).then(() => {
             this.displayBoardsByUserId()
         })
@@ -60,45 +62,26 @@ class BoardsGrid extends Component {
         })
     }
     
-    displayAllTasks(){
-        var data = this.props.getTasksQuery;
-        if(data.loading){
-            return(
-                <div>
-                    Loading...
-                </div>
-            )
-        } else {
-            return data.tasks.map(task => {
-                return(
-                    <li id={task.id} > {task.name} </li>
-                )
-            })
-        }
-    }
-
     render(){
         return (
             <div id="display-boards-container">
-                <div id="display-boards-left-side-container">
-                    <h1> Menu </h1> 
-                </div>
 
-                <div id="display-boards-right-side-container">
-                    <h1> All Boards </h1>
-                    <div className="cards-container">
+                <h1> All Boards </h1>
+                    <div className="board-cards-container">
                         {
                             this.state.boards === [] ? <p> No boards to display </p> : this.state.boards.map(board => {
                                 return(
-                                    <BoardCard id={board.id} name={board.name} tasks={board.tasks} users={board.users} owner={board.owner} />
+                                    <Link key={board.id} to={`/${this.state.username}/board/${board.id}`} className="board-card-anchor">
+                                        <BoardCard  name={board.name} tasks={board.tasks} users={board.users} owner={board.owner} />
+                                    </Link>
                                 )
                             })
                         }
                     </div>
                         
-                    <h1> Owned Boards </h1>
-                        <p> No boards to display </p>
-                </div>
+                <h1> Owned Boards </h1>
+                <p> No boards to display </p>
+
             </div>
         );
     }

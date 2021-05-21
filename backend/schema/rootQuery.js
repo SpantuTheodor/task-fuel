@@ -91,6 +91,18 @@ const RootQuery = new GraphQLObjectType({
             }
         },
 
+        tasksByBoardId: {
+            type: new GraphQLList(TaskType),
+            args: {
+                id: {
+                    type: GraphQLID
+                }
+            },
+            resolve(parent, args) {
+                return Task.find({'boardId': args.id});            
+            }
+        },
+        
         userByUsername: {
             type: UserType,
             args: {

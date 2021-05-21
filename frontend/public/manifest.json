@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "task-grid",
+  "name": "task-grid",
   "icons": [
     {
       "src": "favicon.ico",

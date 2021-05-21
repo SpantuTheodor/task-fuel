@@ -1,0 +1,17 @@
+#menu-container{
+    margin-top:10px;
+    padding-left:4%;
+    width:16%;
+    display: inline-block;
+    vertical-align:top
+}
+
+.menu-items{
+    display: inline-block;
+    margin:auto;
+    color: #707070;
+}
+
+.menu-items:hover{
+    color: #000000;
+}

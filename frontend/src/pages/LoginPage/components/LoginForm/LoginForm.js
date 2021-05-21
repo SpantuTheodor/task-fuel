@@ -6,6 +6,7 @@ import AuthenticationContext from "../../../../contexts/authenticationContext"
 import { graphql } from "react-apollo";
 import React, { Component } from "react";
 import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 class LoginForm extends Component {
 
@@ -28,6 +29,7 @@ class LoginForm extends Component {
             }
         }).then((res) => { 
                 this.context.logIn(res.data.logIn.userId, res.data.logIn.username, res.data.logIn.accessToken)
+                this.setState({ redirect: true })
         }).catch((err) => {console.log(err)})
 
     }
@@ -37,6 +39,7 @@ class LoginForm extends Component {
             <div id="login-div">
                 <h1 id="login-h"> Welcome back! </h1>
                 <p> To connect with us complete the form with your personal information. </p>
+                { this.state.redirect ? (<Redirect push to={`/${this.state.name}/boards`}/>) : null }
                 <form id="login-form" onSubmit={ this.submitForm.bind(this) }>
                         <input className="login-input-items login-form-items" type="text" placeholder="Username" onChange = { (event) => this.setState({name: event.target.value}) } />
                         <input className="login-input-items login-form-items" type="password" placeholder="Password" onChange = { (event) => this.setState({password: event.target.value}) } /> 

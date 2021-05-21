@@ -1,21 +1,17 @@
 #display-boards-container {
     margin-top:10px;
-}
-
-#display-boards-left-side-container{
-    width:20%;
-    display: inline-block;
-    vertical-align:top
-}
-
-#display-boards-right-side-container{
     width:80%;
     display: inline-block;
     vertical-align:top
 }
 
-.cards-container{
+.board-cards-container{
     display: grid;
     grid-template-columns: repeat(5, 250px);
     gap: 20px;
 }
+
+.board-card-anchor{
+    text-decoration: none;
+}
+
