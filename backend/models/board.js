@@ -5,6 +5,7 @@ let boardSchema = new mongoose.Schema({
     ownerId: String,
     userIds: [String],
     taskIds: [String],
+    taskCategories: [String]
 });
 
 module.exports = mongoose.model('Board', boardSchema);

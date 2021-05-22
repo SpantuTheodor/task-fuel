@@ -3,10 +3,10 @@ const {
     GraphQLSchema
 } = graphql;
 
-const RootQuery = require('./rootQuery.js');
-const Mutation = require('./mutation.js');
+const RootQuery = require('./rootQuery/rootQuery.js');
+const RootMutation = require('./rootMutation/rootMutation.js');
 
 module.exports = new GraphQLSchema({
     query: RootQuery,
-    mutation: Mutation
+    mutation: RootMutation
 });

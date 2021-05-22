@@ -16,5 +16,5 @@ class TaskCard extends Component {
         </div>);
     }
 }
- 
+
 export default TaskCard;

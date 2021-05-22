@@ -4,6 +4,7 @@ const {
     GraphQLString,
     GraphQLID,
     GraphQLList,
+    GraphQLNonNull
 } = graphql;
 
 const {
@@ -58,6 +59,9 @@ const TaskType = new GraphQLObjectType({
                     '_id': parent.boardId
                 })
             }
+        },
+        category: {
+            type: new GraphQLNonNull(GraphQLString)
         }
     }),
 });
@@ -121,7 +125,9 @@ const BoardType = new GraphQLObjectType({
                     }
                 });
             }
-
+        },
+        taskCategories: {
+            type: new GraphQLList(GraphQLString)
         }
 
     })
