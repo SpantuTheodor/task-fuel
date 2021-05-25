@@ -1,6 +1,6 @@
 import "./LoginForm.css";
 
-import { logInMutation } from "../../../../queries/queries"
+import logInMutation from "../../../../mutations/logInMutation"
 import AuthenticationContext from "../../../../contexts/authenticationContext"
 
 import { graphql } from "react-apollo";
@@ -44,8 +44,8 @@ class LoginForm extends Component {
                         <input className="login-input-items login-form-items" type="text" placeholder="Username" onChange = { (event) => this.setState({name: event.target.value}) } />
                         <input className="login-input-items login-form-items" type="password" placeholder="Password" onChange = { (event) => this.setState({password: event.target.value}) } /> 
                         <input id="login-submit-button" className="login-form-items" type="submit" value="Log In" />
-                        <Link to="/register" id="login-forgot-pwd"> Forgot your password?</Link>
                 </form>
+                <Link to="/register" id="login-forgot-pwd"> Forgot your password?</Link>
             </div>
         );
     }

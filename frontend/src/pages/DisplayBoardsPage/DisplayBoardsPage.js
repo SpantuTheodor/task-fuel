@@ -13,7 +13,7 @@ class DisplayBoardsPage extends Component {
     }
 
     componentDidMount(){
-        document.title = "boards | task-fuel"
+        document.title = `boards | task-fuel`
     }
 
     render() { 

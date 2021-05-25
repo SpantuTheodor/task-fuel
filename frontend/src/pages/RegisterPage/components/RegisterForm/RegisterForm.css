@@ -5,12 +5,12 @@
 #register-div{
     background-color: #fff;
     width:700px;
-    height:630px;
-    margin-top: 60px;
-    margin-left:55vw;
-    border-radius: 50px;
+    margin-top: 160px;
+    margin-left: 10vw;
+    border-radius: 20px;
     box-shadow: 0px 5px 10px #bebebe,
                 0px -5px 10px #ffffff;
+    display: inline-block;
     text-align: center;
 
 }
@@ -28,19 +28,16 @@
     outline: none;
     background: transparent;
     width:400px;
+    margin-top: 20px;
 }
 
 .register-input-items:nth-of-type(1){
     margin-top:30px;
 }
 
-#register-already-have-acc{
-    margin:40px 0;
-}
-
 #register-submit-button{
     margin-top:20px;
-    background-color:#F17019;
+    background-color:#007acc;
     border-radius:10px;
     width:200px;
     height: 60px;
@@ -51,7 +48,7 @@
 
 #register-already-have-acc{
     display: block;
-    margin:60px auto;
+    margin:93px auto;
 }
 
 .register-error{

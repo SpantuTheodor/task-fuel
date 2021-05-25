@@ -1,6 +1,7 @@
 import "./BoardsGrid.css";
 
-import { getBoardsByUserIdQuery, getUserByUsernameQuery } from '../../../../queries/queries';
+import getBoardsByUserIdQuery from '../../../../queries/getBoardsByUserIdQuery'
+import getUserByUsernameQuery from '../../../../queries/getUserByUsernameQuery'
 import AuthenticationContext from "../../../../contexts/authenticationContext"
 import BoardCard from "../BoardCard/BoardCard"
 

@@ -3,13 +3,13 @@
 }
 
 #login-div{
+    display: inline-block;
     background-color: #fff;
     width:700px;
     height:500px;
-    margin: auto;
-    margin-top: 60px;
-    margin-left:55vw;
-    border-radius: 50px;
+    margin-left:10vw;
+    margin-top: 160px;
+    border-radius: 20px;
     box-shadow: 0px 5px 10px #bebebe,
                 0px -5px 10px #ffffff;
     text-align: center;
@@ -42,7 +42,7 @@
 
 #login-submit-button{
     margin-top:20px;
-    background-color:#F17019;
+    background-color: #007acc;
     border-radius:10px;
     width:200px;
     height: 60px;
@@ -53,5 +53,5 @@
 
 #login-forgot-pwd{
     display: block;
-    margin:70px auto;
+    margin:65px auto;
 }

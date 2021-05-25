@@ -1,4 +1,4 @@
-#menu-container{
+#collaborators-container{
     margin-top:90px;
     padding-left:4%;
     width:16%;
@@ -6,12 +6,8 @@
     vertical-align:top
 }
 
-.menu-items{
+.collaborators-items{
     display: inline-block;
     margin:auto;
     color: #707070;
-}
-
-.menu-items:hover{
-    color: #000000;
 }
