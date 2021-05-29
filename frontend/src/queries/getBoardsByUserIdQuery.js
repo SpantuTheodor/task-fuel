@@ -8,7 +8,7 @@ const getBoardsByUserIdQuery = gql`
             users {
                 name
             }
-            tasks {
+            taskLists {
                 name
             }
             owner {

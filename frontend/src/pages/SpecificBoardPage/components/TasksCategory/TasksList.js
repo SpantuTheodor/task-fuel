@@ -1,6 +1,7 @@
 import "./TasksList.css"
 
 import plusSymbol from '../../../../assets/plus-symbol-icon.png';
+import TaskCard from "../TaskCard/TaskCard"
 
 import React, { Component } from 'react'
 
@@ -11,11 +12,15 @@ class TasksList extends Component {
         this.inputRef = React.createRef();
         this.state = {
             name: this.props.name,
+            tasks: this.props.tasks,
             showInputItem: false
         }
         this.handleNameChange = this.handleNameChange.bind(this)
         this.handleClickOutside = this.handleClickOutside.bind(this)
 
+    }
+
+    componentDidMount(){
     }
 
     componentDidUpdate(){
@@ -45,10 +50,22 @@ class TasksList extends Component {
                 <div className="ten-px-spacer"></div>
                 <h3 className={this.state.showInputItem ? 'tasks-list-title hidden' : 'tasks-list-title'} onClick={this.handleNameChange}> {this.state.name} </h3>
                 <input id={`list-${this.props.name}`} className={!this.state.showInputItem ? 'tasks-list-title hidden' : 'tasks-list-title'} type="text" defaultValue={this.state.name} ref={this.inputRef}/>
+                
+                <div className="task-cards-container">
+                    {
+                        this.state.tasks === null ? <p> No tasks to display </p> : this.state.tasks.map(task => {
+                            return(
+                                <TaskCard key={task.id} name={task.name} description={task.description} assignee={task.assignee} />
+                            )
+                        })
+                    }
+                </div>
+                
                 <div className="tasks-list-add-task-button">
                     <img className="tasks-list-plus-symbol"src={plusSymbol} />
                     <p className="tasks-list-add-task-p"> Add task </p>
                 </div>
+
             </div>
         );
     }

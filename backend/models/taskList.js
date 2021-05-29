@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
-let taskSchema = new mongoose.Schema({
+let taskListSchema = new mongoose.Schema({
     name: String,
     boardId: String,
     taskIds: [String]
 });
 
-module.exports = mongoose.model('Task', taskSchema);
+module.exports = mongoose.model('TaskList', taskListSchema);

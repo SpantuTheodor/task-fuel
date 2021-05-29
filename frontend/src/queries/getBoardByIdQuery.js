@@ -13,13 +13,14 @@ const getBoardByIdQuery = gql`
                 id
                 name
             }
-            tasks {
-                id
+            taskLists {
                 name
-                description
-                assignee {
+                tasks {
                     id
                     name
+                    assignee {
+                        name
+                    }
                 }
             }
         }

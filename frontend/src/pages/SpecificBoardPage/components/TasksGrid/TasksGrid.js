@@ -1,7 +1,6 @@
 import "./TasksGrid.css"
 
-import TaskCard from "../TaskCard/TaskCard"
-import TasksList from "../TasksList/TasksList"
+import TasksList from "../TasksCategory/TasksList"
 
 import React, { Component } from "react"
 import { withApollo } from "react-apollo"
@@ -28,16 +27,15 @@ class TasksGrid extends Component {
             <div id="display-tasks-container">
 
                 <h1> Tasks </h1>
-                <div className="task-cards-container">
+                <div className="task-lists-container">
                     {
-                        this.state.boardObject === null ? <p> No tasks to display </p> : this.state.boardObject.tasks.map(task => {
+                        this.state.boardObject === null ? <p> No tasks to display </p> : this.state.boardObject.taskLists.map(taskList => {
                             return(
-                                <TaskCard key={task.id} name={task.name} description={task.description} assignee={task.assignee} />
+                                <TasksList key={taskList.id} name={taskList.name} tasks={taskList.tasks} />
                             )
                         })
                     }
                 </div>
-                <TasksList name="List name"/>
             </div>
         );
     }

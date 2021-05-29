@@ -6,38 +6,34 @@ const {
     GraphQLNonNull,
 } = graphql;
 
-const Board = require('../../../models/board.js');
-const { BoardType } = require('../../objectTypes.js');
+const TaskList = require('../../../models/taskList.js');
+const { TaskListType } = require('../../objectTypes.js');
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const addBoardMutation = {
-    type: BoardType,
+const addTaskListMutation = {
+    type: TaskListType,
     args: {
         name: {
             type: new GraphQLNonNull(GraphQLString)
         },
-        ownerId: {
+        boardId: {
             type: new GraphQLNonNull(GraphQLID)
         },
-        userIds: {
-            type: new GraphQLList(GraphQLID)
-        },
-        taskListIds: {
+        taskIds: {
             type: new GraphQLList(GraphQLID)
         }
 
     },
     resolve(parent, args) {
-        let board = new Board({
+        let taskList = new TaskList({
             name: args.name,
-            ownerId: args.ownerId,
-            userIds: args.userIds,
-            taskLists: args.taskListIds
+            boardId: args.boardId,
+            taskIds: args.taskIds
         })
-        return board.save();
+        return taskList.save();
     }
 }
 
-module.exports = { addBoardMutation}
+module.exports = { addTaskListMutation}

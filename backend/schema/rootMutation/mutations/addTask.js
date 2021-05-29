@@ -34,8 +34,8 @@ const addTaskMutation = {
         boardId: {
             type: new GraphQLNonNull(GraphQLID)
         },
-        list: {
-            type: new GraphQLNonNull(GraphQLString)
+        listId: {
+            type: new GraphQLNonNull(GraphQLID)
         }
     },
     resolve(parent, args, req) {
@@ -52,7 +52,7 @@ const addTaskMutation = {
             assigneeId: args.assigneeId,
             collaboratorIds: args.collaboratorIds,
             boardId: args.boardId,
-            list: args.list
+            listId: args.listId
         });
         return task.save();
     }

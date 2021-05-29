@@ -1,21 +1,22 @@
-const graphql = require("graphql");
+const graphql = require("graphql")
 const {
     GraphQLObjectType,
     GraphQLString,
     GraphQLID,
     GraphQLList,
     GraphQLNonNull
-} = graphql;
+} = graphql
 
 const {
     GraphQLDate,
     GraphQLTime,
     GraphQLDateTime
-} = require('graphql-iso-date');
+} = require('graphql-iso-date')
 
-const User = require('../models/user.js');
-const Task = require('../models/task.js');
-const Board = require('../models/board.js');
+const User = require('../models/user.js')
+const Task = require('../models/task.js')
+const Board = require('../models/board.js')
+const TaskList = require('../models/taskList')
 
 const TaskType = new GraphQLObjectType({
     name: "Task",
@@ -52,16 +53,20 @@ const TaskType = new GraphQLObjectType({
             }
         },
         board: {
-            type: BoardType,
+            type: new GraphQLNonNull(BoardType),
             resolve(parent, args) {
-                console.log(parent)
                 return Board.findOne({
                     '_id': parent.boardId
                 })
             }
         },
         list: {
-            type: new GraphQLNonNull(GraphQLString)
+            type: new GraphQLNonNull(TaskListType),
+            resolve(parent, args) {
+                return TaskList.findOne({
+                    '_id': parent.listId
+                })
+            }
         }
     }),
 });
@@ -116,6 +121,35 @@ const BoardType = new GraphQLObjectType({
                 });
             }
         },
+        taskLists: {
+            type: new GraphQLList(TaskListType),
+            async resolve(parent, args){
+                return await TaskList.find({
+                    '_id': {
+                        $in: parent.taskListIds
+                    }
+                }) 
+            }
+        }
+
+    })
+})
+
+const TaskListType = new GraphQLObjectType({
+    name: "TaskList",
+    fields: () => ({
+        id: {
+            type: GraphQLID
+        },
+        name: {
+            type: GraphQLString
+        },
+        board: {
+            type: BoardType,
+            resolve(parent, args){
+                return Board.findById(parent.boardId);
+            }
+        },
         tasks: {
             type: new GraphQLList(TaskType),
             async resolve(parent, args) {
@@ -125,11 +159,7 @@ const BoardType = new GraphQLObjectType({
                     }
                 });
             }
-        },
-        taskLists: {
-            type: new GraphQLList(GraphQLString)
         }
-
     })
 })
 
@@ -155,5 +185,6 @@ module.exports = {
     TaskType,
     UserType,
     BoardType,
+    TaskListType,
     AuthenticationType
 };

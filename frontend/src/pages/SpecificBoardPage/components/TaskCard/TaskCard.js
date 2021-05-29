@@ -1,3 +1,5 @@
+import "./TaskCard.css"
+
 import React, { Component } from 'react';
 
 class TaskCard extends Component {
@@ -7,10 +9,9 @@ class TaskCard extends Component {
     }
     render() { 
         return (
-        <div>
+        <div className="task-card">
             
             <p>{this.props.name}</p>
-            <p>{this.props.description}</p>
             <p>{this.props.assignee.name}</p>
 
         </div>);
