@@ -14,7 +14,7 @@ const { BoardType } = require('../../objectTypes');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const addBoardMutation = {
+const createBoardMutation = {
     type: BoardType,
     args: {
         name: {
@@ -22,35 +22,23 @@ const addBoardMutation = {
         },
         ownerId: {
             type: new GraphQLNonNull(GraphQLID)
-        },
-        userIds: {
-            type: new GraphQLList(GraphQLID)
-        },
-        taskListIds: {
-            type: new GraphQLList(GraphQLID)
         }
 
     },
     async resolve(parent, args) {
 
-        let newUserIds = [...new Set([args.ownerId].concat(args.userIds))]
         let board = new Board({
             name: args.name,
             ownerId: args.ownerId,
-            userIds: newUserIds,
-            taskListIds: args.taskListIds
+            userIds: [args.ownerId]
         })
 
         await User.updateOne({
             '_id': board.ownerId
         }, { $push: {boardIds: board.id }}, { upsert: true })
 
-        await TaskList.updateMany({
-            '_id': { $in: board.taskListIds }
-        }, { $set: {boardId: board.id }})
-
         return board.save();
     }
 }
 
-module.exports = { addBoardMutation}
+module.exports = { createBoardMutation}

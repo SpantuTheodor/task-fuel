@@ -1,6 +1,6 @@
 import "./TasksGrid.css"
 
-import TasksList from "../TasksCategory/TasksList"
+import TasksList from "../TasksList/TasksList"
 
 import React, { Component } from "react"
 import { withApollo } from "react-apollo"

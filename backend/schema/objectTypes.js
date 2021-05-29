@@ -52,19 +52,11 @@ const TaskType = new GraphQLObjectType({
                 })
             }
         },
-        board: {
-            type: new GraphQLNonNull(BoardType),
-            resolve(parent, args) {
-                return Board.findOne({
-                    '_id': parent.boardId
-                })
-            }
-        },
-        list: {
+        taskList: {
             type: new GraphQLNonNull(TaskListType),
             resolve(parent, args) {
                 return TaskList.findOne({
-                    '_id': parent.listId
+                    '_id': parent.taskListId
                 })
             }
         }

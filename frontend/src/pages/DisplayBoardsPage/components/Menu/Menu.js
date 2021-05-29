@@ -1,9 +1,11 @@
 import "./Menu.css";
 
 import AuthenticationContext from "../../../../contexts/authenticationContext"
+import createBoardMutation from "../../../../mutations/createBoardMutation"
 
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
+import { withApollo } from "react-apollo";
 
 const customStyles = {
     content : {
@@ -21,11 +23,13 @@ ReactModal.setAppElement('#root')
 class Menu extends Component {
     constructor(props) {
         super(props);
+        this.modalRef = React.createRef();
         this.state = {
             modalIsOpen: false
         }
         this.openModal = this.openModal.bind(this)
         this.closeModal = this.closeModal.bind(this)
+        this.createBoard = this.createBoard.bind(this)
     }
 
     static contextType = AuthenticationContext
@@ -38,6 +42,18 @@ class Menu extends Component {
         this.setState({modalIsOpen: false})
     }
 
+    createBoard(event){
+        event.preventDefault()
+        this.props.client.mutate({
+            mutation: createBoardMutation,
+            variables: {
+                name: this.modalRef.current.value,
+                ownerId: this.context.userId
+            }
+        }).then((res) => {
+            console.log(res)
+        })
+    }
     render() { 
         return (
             <div id="menu-container">
@@ -53,8 +69,8 @@ class Menu extends Component {
                     >
 
                     <form>
-                        <input placeholder="Board name"/>
-                        <button onClick={this.closeModal}>Close</button>                       
+                        <input placeholder="Board name" ref={this.modalRef}/>
+                        <button onClick={this.createBoard}>Create board</button>                       
                     </form>
                 </ReactModal>
 
@@ -63,4 +79,4 @@ class Menu extends Component {
     }
 }
 
-export default Menu;
+export default withApollo(Menu);

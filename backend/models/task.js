@@ -7,8 +7,7 @@ let taskSchema = new mongoose.Schema({
     endDate: Date,
     assigneeId: String,
     collaboratorIds: [String],
-    boardId: String,
-    listId: String
+    taskListId: String
 });
 
 module.exports = mongoose.model('Task', taskSchema);

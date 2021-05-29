@@ -1,14 +1,15 @@
-const graphql = require("graphql");
+const graphql = require("graphql")
 const {
     GraphQLString,
     GraphQLID,
     GraphQLList,
     GraphQLNonNull,
-} = graphql;
+} = graphql
 
-const { GraphQLDateTime } = require('graphql-iso-date');
-const Task = require('../../../models/task.js');
-const { TaskType } = require('../../objectTypes.js');
+const { GraphQLDateTime } = require('graphql-iso-date')
+const Task = require('../../../models/task.js')
+const TaskList = require('../../../models/taskList.js')
+const { TaskType } = require('../../objectTypes.js')
 
 const addTaskMutation = {
     type: TaskType,
@@ -31,17 +32,14 @@ const addTaskMutation = {
         collaboratorIds: {
             type: new GraphQLList(GraphQLID)
         },
-        boardId: {
-            type: new GraphQLNonNull(GraphQLID)
-        },
-        listId: {
+        taskListId: {
             type: new GraphQLNonNull(GraphQLID)
         }
     },
-    resolve(parent, args, req) {
+    async resolve(parent, args, req) {
 
         if(!req.isAuthenticated){
-            throw new Error('Unauthenticated');
+            throw new Error('Unauthenticated')
         }
 
         let task = new Task({
@@ -51,10 +49,14 @@ const addTaskMutation = {
             endDate: args.endDate,
             assigneeId: args.assigneeId,
             collaboratorIds: args.collaboratorIds,
-            boardId: args.boardId,
-            listId: args.listId
-        });
-        return task.save();
+            taskListId: args.taskListId
+        })
+
+        await TaskList.updateOne({
+            '_id': task.taskListId
+        }, { $push: {taskIds: task.id }}, { upsert: true })
+
+        return task.save()
     }
 }
 

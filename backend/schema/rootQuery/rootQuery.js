@@ -8,7 +8,6 @@ const { tasksQuery } = require('./queries/tasks')
 const { usersQuery } = require('./queries/users')
 const { boardsQuery } = require('./queries/boards')
 const { boardsByUserIdQuery } = require('./queries/boardsByUserId')
-const { tasksByBoardIdQuery } = require('./queries/tasksByBoardId');
 const { userByUsernameQuery } = require("./queries/userByUsername.js");
 const { taskListQuery } = require("./queries/taskList");
 const { taskListsQuery } = require("./queries/taskLists");
@@ -26,7 +25,6 @@ const RootQuery = new GraphQLObjectType({
         boards: boardsQuery,
         taskLists: taskListsQuery,
         boardsByUserId: boardsByUserIdQuery,
-        tasksByBoardId: tasksByBoardIdQuery,
         userByUsername: userByUsernameQuery
     }
 });

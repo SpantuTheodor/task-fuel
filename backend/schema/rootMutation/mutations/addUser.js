@@ -22,9 +22,6 @@ const addUserMutation = {
         password: {
             type: new GraphQLNonNull(GraphQLString)
         },
-        taskIds: {
-            type: new GraphQLList(GraphQLID)
-        },
         boardIds: {
             type: new GraphQLList(GraphQLID)
         }

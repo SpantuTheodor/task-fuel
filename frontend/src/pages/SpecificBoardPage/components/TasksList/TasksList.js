@@ -13,14 +13,12 @@ class TasksList extends Component {
         this.state = {
             name: this.props.name,
             tasks: this.props.tasks,
-            showInputItem: false
+            showInputItem: false,
+            containerHeight: `${110 + this.props.tasks.length*90}px` 
         }
         this.handleNameChange = this.handleNameChange.bind(this)
         this.handleClickOutside = this.handleClickOutside.bind(this)
 
-    }
-
-    componentDidMount(){
     }
 
     componentDidUpdate(){
@@ -46,7 +44,7 @@ class TasksList extends Component {
 
     render() { 
         return ( 
-            <div className="tasks-list-div">
+            <div className="tasks-list-div" style={{height: this.state.containerHeight}}>
                 <div className="ten-px-spacer"></div>
                 <h3 className={this.state.showInputItem ? 'tasks-list-title hidden' : 'tasks-list-title'} onClick={this.handleNameChange}> {this.state.name} </h3>
                 <input id={`list-${this.props.name}`} className={!this.state.showInputItem ? 'tasks-list-title hidden' : 'tasks-list-title'} type="text" defaultValue={this.state.name} ref={this.inputRef}/>
