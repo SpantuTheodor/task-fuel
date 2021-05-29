@@ -60,7 +60,7 @@ const TaskType = new GraphQLObjectType({
                 })
             }
         },
-        category: {
+        list: {
             type: new GraphQLNonNull(GraphQLString)
         }
     }),
@@ -126,7 +126,7 @@ const BoardType = new GraphQLObjectType({
                 });
             }
         },
-        taskCategories: {
+        taskLists: {
             type: new GraphQLList(GraphQLString)
         }
 

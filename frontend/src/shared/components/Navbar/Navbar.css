@@ -17,12 +17,12 @@
 
 .right-button-anchor{
     text-decoration: none;
+
 }
 
 .right-button{
-    position: relative;
-    margin: 0;
-    margin-left: 83%;
+    position:absolute;
+    right:20px;
     top: 16px;
     font-size: 22px;
     display: inline;
@@ -31,4 +31,16 @@
 
 .right-button:hover{
     color: #ffffff
+}
+
+@media only screen and (max-width: 1200px) {
+    #logo{
+        margin-left: 40px;
+    }
+}
+
+@media only screen and (max-width: 650px) {
+    #logo{
+        margin-left: 20px;
+    }
 }

@@ -1,6 +1,6 @@
 import "./WatermarkedImage.css";
 
-import watermarkedImage from './assets/watermarked-image.jpg';
+import watermarkedImage from '../../../assets/watermarked-image.jpg';
 
 import React, { Component } from 'react';
 

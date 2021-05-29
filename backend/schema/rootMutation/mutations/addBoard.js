@@ -27,7 +27,7 @@ const addBoardMutation = {
         taskIds: {
             type: new GraphQLList(GraphQLID)
         },
-        taskCategories: {
+        taskLists: {
             type: new GraphQLList(GraphQLString)
         }
 
@@ -38,7 +38,7 @@ const addBoardMutation = {
             ownerId: args.ownerId,
             userIds: args.userIds,
             taskIds: args.taskIds,
-            taskCategories: args.taskCategories
+            taskLists: args.taskLists
         })
         return board.save();
     }

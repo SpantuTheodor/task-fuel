@@ -1,0 +1,51 @@
+.tasks-list-div{
+    height: 110px;
+    width: 350px;
+    background-color: #e3e3e3;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+}
+
+.tasks-list-title{
+    padding-left: 15px;
+    margin: 0;
+}
+
+.tasks-list-add-task-button{
+    width:300px;
+    height:40px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 5px 10px #bebebe,
+    0px -2px 10px #e3e3e3;
+    display: flex;
+    align-items: center;
+}
+
+.tasks-list-add-task-button:hover{
+    background-color: #f6f6f6;
+    box-shadow:  0px 5px 10px #c3c3c3;
+    color: black;
+}
+
+.tasks-list-plus-symbol{
+    width: 15px;
+    height: 15px;
+    margin-left: 10px;
+}
+
+.tasks-list-add-task-p{
+    margin-left: 10px;
+    color: #707070;
+}
+
+.hidden { display:none; }
+
+.ten-px-spacer{
+    height:10px;
+    display:block
+}

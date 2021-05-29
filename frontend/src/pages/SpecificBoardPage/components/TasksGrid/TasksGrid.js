@@ -1,7 +1,7 @@
 import "./TasksGrid.css"
 
-import getTasksByBoardIdQuery from "../../../../queries/getTasksByBoardIdQuery"
 import TaskCard from "../TaskCard/TaskCard"
+import TasksList from "../TasksList/TasksList"
 
 import React, { Component } from "react"
 import { withApollo } from "react-apollo"
@@ -37,6 +37,7 @@ class TasksGrid extends Component {
                         })
                     }
                 </div>
+                <TasksList name="List name"/>
             </div>
         );
     }

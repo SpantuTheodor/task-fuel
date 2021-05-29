@@ -12,7 +12,7 @@ class RegisterPage extends Component {
 
     render() { 
         return (
-            <div>
+            <div id="register-page-container">
                 <NavBar />
                 <WatermarkedImage />
                 <RegisterForm />
