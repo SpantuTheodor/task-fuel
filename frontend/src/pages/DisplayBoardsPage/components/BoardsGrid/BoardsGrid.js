@@ -1,4 +1,4 @@
-import "./BoardsGrid.css";
+import "./BoardsGrid.css"
 
 import getBoardsByUserIdQuery from '../../../../queries/getBoardsByUserIdQuery'
 import getUserByUsernameQuery from '../../../../queries/getUserByUsernameQuery'
@@ -6,7 +6,7 @@ import AuthenticationContext from "../../../../contexts/authenticationContext"
 import BoardCard from "../BoardCard/BoardCard"
 
 import React, { Component } from "react"
-import { withApollo } from "react-apollo";
+import { withApollo } from "react-apollo"
 import { Link } from 'react-router-dom'
 
 
@@ -73,7 +73,7 @@ class BoardsGrid extends Component {
                             this.state.boards === [] ? <p> No boards to display </p> : this.state.boards.map(board => {
                                 return(
                                     <Link key={board.id} to={`/${this.state.username}/board/${board.id}`} className="board-card-anchor">
-                                        <BoardCard  name={board.name} tasks={board.tasks} users={board.users} owner={board.owner} />
+                                        <BoardCard boardId={board.id} name={board.name} tasks={board.tasks} owner={board.owner} />
                                     </Link>
                                 )
                             })
@@ -84,8 +84,8 @@ class BoardsGrid extends Component {
                 <p> No boards to display </p>
 
             </div>
-        );
+        )
     }
 }
 
-export default withApollo(BoardsGrid);
+export default withApollo(BoardsGrid)

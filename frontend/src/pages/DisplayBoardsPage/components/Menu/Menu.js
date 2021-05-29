@@ -54,6 +54,7 @@ class Menu extends Component {
             console.log(res)
         })
     }
+    
     render() { 
         return (
             <div id="menu-container">

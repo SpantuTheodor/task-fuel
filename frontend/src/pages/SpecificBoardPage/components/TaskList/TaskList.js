@@ -1,11 +1,11 @@
-import "./TasksList.css"
+import "./TaskList.css"
 
 import plusSymbol from '../../../../assets/plus-symbol-icon.png';
 import TaskCard from "../TaskCard/TaskCard"
 
 import React, { Component } from 'react'
 
-class TasksList extends Component {
+class TaskList extends Component {
     
     constructor(props) {
         super(props);
@@ -69,4 +69,4 @@ class TasksList extends Component {
     }
 }
 
-export default TasksList
+export default TaskList
