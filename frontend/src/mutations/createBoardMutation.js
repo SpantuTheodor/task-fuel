@@ -5,6 +5,15 @@ const createBoardMutation = gql`
         createBoard(name: $name, ownerId: $ownerId){
             id
             name
+            users {
+                name
+            }
+            taskLists {
+                name
+            }
+            owner {
+                name
+            }
         }
     }
 `

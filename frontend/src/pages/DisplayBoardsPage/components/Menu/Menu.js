@@ -51,10 +51,11 @@ class Menu extends Component {
                 ownerId: this.context.userId
             }
         }).then((res) => {
-            console.log(res)
+            this.props.createBoardCard(res.data.createBoard)
+            this.closeModal()
         })
     }
-    
+
     render() { 
         return (
             <div id="menu-container">
@@ -66,7 +67,7 @@ class Menu extends Component {
                     isOpen={this.state.modalIsOpen}
                     onRequestClose={this.closeModal}
                     style={customStyles}
-                    contentLabel="Example Modal"
+                    contentLabel="Create Board"
                     >
 
                     <form>

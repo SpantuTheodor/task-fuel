@@ -41,9 +41,8 @@ class SpecificBoardPage extends Component {
     }
 
     render() {
-        console.log(this.state.boardObject)
         return (
-            <div>
+            <div id="specific-board-page-container">
                 <NavBar />
                 <Collaborators boardObject={this.state.boardObject} />
                 <TasksGrid boardObject={this.state.boardObject} />

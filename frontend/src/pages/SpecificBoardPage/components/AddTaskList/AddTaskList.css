@@ -1,0 +1,26 @@
+.add-list-container{
+    height: 70px;
+    width: 350px;
+    background-color: #e3e3e3;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.add-list-container input{
+    height:35px;
+    width: 300px;
+    border: 0;
+    border-radius: 5px;
+    background-color: #d1d1d1;
+    box-shadow: inset 2px 2px 10px #6a6a6a,
+            inset -2px -2px 10px #ffffff;
+    padding-left: 20px;
+}
+
+.add-list-container input:focus{
+    outline: none;
+    text-align:start;
+}

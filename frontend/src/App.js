@@ -28,25 +28,53 @@ const authLink = setContext((_, { headers }) => {
 
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
-  cache: new InMemoryCache()
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          boardsByUserId: {
+            merge(existing, incoming){
+              return incoming
+            }
+          }
+        }
+      }
+    }
+  })
 });
 
 class App extends Component{
 
-  state = {
-    accessToken: null,
-    userId: null,
-    username: null
+  constructor(){
+    super()
+    if (localStorage.getItem('accessToken') && localStorage.getItem('userId') && localStorage.getItem('username')) {
+      this.state = {
+        accessToken: localStorage.getItem('accessToken'),
+        userId: localStorage.getItem('userId'),
+        username: localStorage.getItem('username')
+      }
+    } else {
+      this.state = {
+        accessToken: null,
+        userId: null,
+        username: null
+      } 
+    }
   }
 
   logIn = (userId, username, accessToken) => {
     this.setState({accessToken: accessToken, userId: userId, username: username})
     localStorage.setItem('accessToken', accessToken)
+    localStorage.setItem('userId', userId)
+    localStorage.setItem('username', username)
   }
 
   logOut = () => {
     this.setState({accessToken: null, userId: null, username: null})
     localStorage.removeItem('accessToken')
+    localStorage.removeItem('userId')
+    localStorage.removeItem('username')
+
   }
 
   componentDidMount(){

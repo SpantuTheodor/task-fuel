@@ -4,3 +4,9 @@
     display: inline-block;
     vertical-align:top;
 }
+
+.task-lists-container{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}

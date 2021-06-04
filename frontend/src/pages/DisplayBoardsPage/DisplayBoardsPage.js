@@ -8,8 +8,20 @@ class DisplayBoardsPage extends Component {
     constructor(props){
         super(props)
         this.state = {
-            username: props.match.params.username
+            username: props.match.params.username,
+            boardCardIdToDelete: null,
+            boardCardToCreate: null
         }
+        this.deleteBoardCard = this.deleteBoardCard.bind(this)
+        this.createBoardCard = this.createBoardCard.bind(this)
+    }
+
+    deleteBoardCard(boardCardIdToDelete) {
+        this.setState({boardCardIdToDelete: boardCardIdToDelete});
+    }
+    
+    createBoardCard(boardCardToCreate) {
+        this.setState({boardCardToCreate: boardCardToCreate})
     }
 
     componentDidMount(){
@@ -20,8 +32,14 @@ class DisplayBoardsPage extends Component {
         return (
             <div>
                 <NavBar />
-                <Menu />
-                <BoardsGrid username={this.state.username}/>
+                <Menu createBoardCard={this.createBoardCard}/>
+                <BoardsGrid 
+                    username={this.state.username} 
+                    deleteBoardCard={this.deleteBoardCard} 
+                    createBoardCard={this.createBoardCard} 
+                    boardCardIdToDelete={this.state.boardCardIdToDelete}
+                    boardCardToCreate={this.state.boardCardToCreate}  
+                />
             </div>
         );
     }

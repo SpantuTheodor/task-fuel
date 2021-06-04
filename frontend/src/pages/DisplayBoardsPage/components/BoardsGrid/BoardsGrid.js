@@ -17,7 +17,8 @@ class BoardsGrid extends Component {
         this.state = {
             userId: null,
             username: null,
-            boards: []
+            boards: [],
+            boardCardIdToDelete: this.props.boardCardIdToDelete
         }
         this.getUserIdByUsername = this.getUserIdByUsername.bind(this)
         this.displayBoardsByUserId = this.displayBoardsByUserId.bind(this)
@@ -27,6 +28,28 @@ class BoardsGrid extends Component {
     
     componentDidMount(){
         this.getUserIdByUsername()
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.boardCardIdToDelete !== prevProps.boardCardIdToDelete) {
+            
+            let boardCardIdToDelete = this.props.boardCardIdToDelete
+            let newBoards = this.state.boards.filter(function(board) {
+                return board.id != boardCardIdToDelete;
+            });
+
+            this.setState({
+                boardCardIdToDelete: this.props.boardCardIdToDelete,
+                boards: newBoards
+            });
+
+        } else if (this.props.boardCardToCreate !== prevProps.boardCardToCreate) {
+            let newBoards = [...this.state.boards].concat(this.props.boardCardToCreate)
+            this.setState({
+                boardCardIdToDelete: this.props.boardCardIdToDelete,
+                boards: newBoards
+            });
+        }
     }
 
     getUserIdByUsername(){
@@ -46,8 +69,9 @@ class BoardsGrid extends Component {
         this.props.client.query({
             query: getBoardsByUserIdQuery,
             variables: {
-                id: this.state.userId
-            }
+                id: this.context.userId
+            },
+            fetchPolicy: 'no-cache'
         }).then((res) => {
             let newBoards = []
             res.data.boardsByUserId.map(board => {
@@ -73,7 +97,7 @@ class BoardsGrid extends Component {
                             this.state.boards === [] ? <p> No boards to display </p> : this.state.boards.map(board => {
                                 return(
                                     <Link key={board.id} to={`/${this.state.username}/board/${board.id}`} className="board-card-anchor">
-                                        <BoardCard boardId={board.id} name={board.name} tasks={board.tasks} owner={board.owner} />
+                                        <BoardCard boardId={board.id} name={board.name} tasks={board.tasks} owner={board.owner} deleteBoardCard={this.props.deleteBoardCard} />
                                     </Link>
                                 )
                             })

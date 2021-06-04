@@ -45,7 +45,7 @@ class LoginForm extends Component {
                         <input className="login-input-items login-form-items" type="password" placeholder="Password" onChange = { (event) => this.setState({password: event.target.value}) } /> 
                         <input id="login-submit-button" className="login-form-items" type="submit" value="Log In" />
                 </form>
-                <Link to="/register" id="login-forgot-pwd"> Forgot your password?</Link>
+                <Link to="/register" id="login-forgot-pwd">Don't have an account?</Link>
             </div>
         );
     }

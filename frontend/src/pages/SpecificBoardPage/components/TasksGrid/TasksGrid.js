@@ -1,6 +1,7 @@
 import "./TasksGrid.css"
 
 import TaskList from "../TaskList/TaskList"
+import AddTaskList from "../AddTaskList/AddTaskList"
 
 import React, { Component } from "react"
 import { withApollo } from "react-apollo"
@@ -35,7 +36,9 @@ class TasksGrid extends Component {
                             )
                         })
                     }
+                <AddTaskList />
                 </div>
+                            
             </div>
         );
     }

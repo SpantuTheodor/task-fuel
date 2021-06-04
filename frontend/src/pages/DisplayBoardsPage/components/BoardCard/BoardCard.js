@@ -1,6 +1,8 @@
 import "./BoardCard.css"
 
 import deleteBoardMutation from "../../../../mutations/deleteBoardMutation"
+import getBoardsByUserIdQuery from '../../../../queries/getBoardsByUserIdQuery'
+import AuthenticationContext from '../../../../contexts/authenticationContext'
 import xSymbol from '../../../../assets/x-icon.png'
 
 import React, { Component } from 'react'
@@ -17,6 +19,8 @@ class BoardCard extends Component {
         this.deleteBoard = this.deleteBoard.bind(this)
     }
 
+    static contextType = AuthenticationContext
+
     deleteBoard(event){
         event.preventDefault()
         this.props.client.mutate({
@@ -26,6 +30,7 @@ class BoardCard extends Component {
             }
         }).then((res) => {
             console.log(res)
+            this.props.deleteBoardCard(this.state.boardId)
         })
     }
 
