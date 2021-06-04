@@ -15,6 +15,7 @@ class SpecificBoardPage extends Component {
             boardObject: null,
         }
         this.getBoardById = this.getBoardById.bind(this)
+        this.addTaskListToBoard = this.addTaskListToBoard.bind(this)
     }
 
     componentDidMount() {
@@ -25,6 +26,12 @@ class SpecificBoardPage extends Component {
         if(this.state.boardObject != null){
             document.title = `${this.state.boardObject.name} | task-fuel`
         }
+    }
+
+    addTaskListToBoard(taskListObject){
+        let boardObjectCopy = Object.assign({}, this.state.boardObject)
+        boardObjectCopy.taskLists = boardObjectCopy.taskLists.concat([taskListObject])
+        this.setState({boardObject: boardObjectCopy})
     }
 
     getBoardById(){
@@ -41,11 +48,12 @@ class SpecificBoardPage extends Component {
     }
 
     render() {
+        console.log(this.state.boardObject)
         return (
             <div id="specific-board-page-container">
                 <NavBar />
                 <Collaborators boardObject={this.state.boardObject} />
-                <TasksGrid boardObject={this.state.boardObject} />
+                <TasksGrid boardObject={this.state.boardObject} addTaskListToBoard={this.addTaskListToBoard} />
             </div>
         );
     }

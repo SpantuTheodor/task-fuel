@@ -11,10 +11,12 @@ class TaskList extends Component {
         super(props);
         this.inputRef = React.createRef();
         this.state = {
+            taskListId: this.props.taskListId,
             name: this.props.name,
             tasks: this.props.tasks,
+            boardObject: this.props.boardObject,
             showInputItem: false,
-            containerHeight: `${120 + this.props.tasks.length*90}px` 
+            containerHeight: `${120 + this.props.tasks.length*85}px`
         }
         this.handleNameChange = this.handleNameChange.bind(this)
         this.handleClickOutside = this.handleClickOutside.bind(this)
@@ -45,21 +47,23 @@ class TaskList extends Component {
     render() { 
         return ( 
             <div className="tasks-list-container" style={{height: this.state.containerHeight}}>
-                <div className="ten-px-spacer"></div>
                 <h3 className={this.state.showInputItem ? 'tasks-list-title hidden' : 'tasks-list-title'} onClick={this.handleNameChange}> {this.state.name} </h3>
                 <input id={`list-${this.props.name}`} className={!this.state.showInputItem ? 'tasks-list-title hidden' : 'tasks-list-title'} type="text" defaultValue={this.state.name} ref={this.inputRef}/>
                 
-                <div className="task-cards-container">
-                    {
-                        this.state.tasks === null ? <p> No tasks to display </p> : this.state.tasks.map(task => {
-                            return(
-                                <TaskCard key={task.id} name={task.name} description={task.description} assignee={task.assignee} />
-                            )
-                        })
-                    }
-                </div>
+                {this.state && this.state.tasks.length ? 
+                    <div className="task-cards-container">
+                        {
+                            this.state.tasks.map(task => {
+                                return(
+                                    <TaskCard key={task.id} name={task.name} description={task.description} assignee={task.assignee} />
+                                )
+                            })
+                        }
+                    </div>
                 
-                <AddTask />
+                : null
+                }
+                <AddTask taskListId={this.state.taskListId} boardObject={this.state.boardObject}/>
 
             </div>
         );

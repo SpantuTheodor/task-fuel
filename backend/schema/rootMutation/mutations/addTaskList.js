@@ -6,8 +6,9 @@ const {
     GraphQLNonNull,
 } = graphql;
 
-const TaskList = require('../../../models/taskList.js');
-const { TaskListType } = require('../../objectTypes.js');
+const TaskList = require('../../../models/taskList');
+const Board = require('../../../models/board')
+const { TaskListType } = require('../../objectTypes');
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -26,12 +27,17 @@ const addTaskListMutation = {
         }
 
     },
-    resolve(parent, args) {
+    async resolve(parent, args) {
         let taskList = new TaskList({
             name: args.name,
             boardId: args.boardId,
             taskIds: args.taskIds
         })
+    
+        await Board.updateOne({
+            '_id': taskList.boardId
+        }, { $push: {taskListIds: taskList.id }}, { upsert: true })
+
         return taskList.save();
     }
 }

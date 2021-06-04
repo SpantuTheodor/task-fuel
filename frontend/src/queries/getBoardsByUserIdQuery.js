@@ -9,6 +9,7 @@ const getBoardsByUserIdQuery = gql`
                 name
             }
             taskLists {
+                id
                 name
             }
             owner {

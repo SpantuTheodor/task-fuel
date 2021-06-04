@@ -12,7 +12,7 @@ class TaskCard extends Component {
         <div className="task-card">
             
             <p>{this.props.name}</p>
-            <p>{this.props.assignee.name}</p>
+            {this.props.assignee === null ? <p> - </p> : <p>{this.props.assignee.name}</p>}
 
         </div>);
     }

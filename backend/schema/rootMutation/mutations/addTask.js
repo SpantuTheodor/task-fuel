@@ -27,7 +27,7 @@ const addTaskMutation = {
             type: new GraphQLNonNull(GraphQLDateTime)
         },
         assigneeId: {
-            type: new GraphQLNonNull(GraphQLID)
+            type: GraphQLID
         },
         collaboratorIds: {
             type: new GraphQLList(GraphQLID)

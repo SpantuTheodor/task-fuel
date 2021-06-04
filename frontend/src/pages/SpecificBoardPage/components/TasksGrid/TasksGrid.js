@@ -32,11 +32,12 @@ class TasksGrid extends Component {
                     {
                         this.state.boardObject === null ? <p> No tasks to display </p> : this.state.boardObject.taskLists.map(taskList => {
                             return(
-                                <TaskList key={taskList.id} name={taskList.name} tasks={taskList.tasks} />
+                                <TaskList key={taskList.id} taskListId={taskList.id} name={taskList.name} tasks={taskList.tasks} boardObject={this.state.boardObject} />
                             )
                         })
                     }
-                <AddTaskList />
+                <AddTaskList boardObject={this.state.boardObject} addTaskListToBoard={this.props.addTaskListToBoard} />
+
                 </div>
                             
             </div>

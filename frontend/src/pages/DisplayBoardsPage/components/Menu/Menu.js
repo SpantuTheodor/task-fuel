@@ -51,8 +51,8 @@ class Menu extends Component {
                 ownerId: this.context.userId
             }
         }).then((res) => {
-            this.props.createBoardCard(res.data.createBoard)
             this.closeModal()
+            this.props.createBoardCard(res.data.createBoard)
         })
     }
 

@@ -14,6 +14,7 @@ const getBoardByIdQuery = gql`
                 name
             }
             taskLists {
+                id
                 name
                 tasks {
                     id
