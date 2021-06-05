@@ -38,6 +38,7 @@ textarea {
     0px -2px 10px #dddddd;
     transform: scale(0.95);
     transition-duration: 0.25s;
+    cursor: pointer;
 }
 
 .add-task-plus-symbol{

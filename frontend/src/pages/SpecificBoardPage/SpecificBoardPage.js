@@ -14,8 +14,15 @@ class SpecificBoardPage extends Component {
             boardId: props.match.params.boardId,
             boardObject: null,
         }
+
+        this.passepartoutRef = React.createRef()
+
         this.getBoardById = this.getBoardById.bind(this)
         this.addTaskListToBoard = this.addTaskListToBoard.bind(this)
+        this.addTaskToBoard = this.addTaskToBoard.bind(this)
+        this.deleteTaskListFromBoard = this.deleteTaskListFromBoard.bind(this)
+        this.deleteTaskFromBoard = this.deleteTaskFromBoard.bind(this)
+        this.changePassepartoutVisibility = this.changePassepartoutVisibility.bind(this)
     }
 
     componentDidMount() {
@@ -29,9 +36,40 @@ class SpecificBoardPage extends Component {
     }
 
     addTaskListToBoard(taskListObject){
-        let boardObjectCopy = Object.assign({}, this.state.boardObject)
-        boardObjectCopy.taskLists = boardObjectCopy.taskLists.concat([taskListObject])
+        let boardObjectCopy = JSON.parse(JSON.stringify(this.state.boardObject))
+        boardObjectCopy.taskLists.push(taskListObject)
         this.setState({boardObject: boardObjectCopy})
+    }
+
+    addTaskToBoard(taskListObjectId, taskObject){
+        let boardObjectCopy = JSON.parse(JSON.stringify(this.state.boardObject))
+        let index = boardObjectCopy.taskLists.findIndex(taskList => taskList.id === taskListObjectId)
+        boardObjectCopy.taskLists[index].tasks.push(taskObject)
+        this.setState({boardObject: boardObjectCopy})
+    }
+
+    deleteTaskListFromBoard(taskListObjectId){
+        let boardObjectCopy = JSON.parse(JSON.stringify(this.state.boardObject))
+        boardObjectCopy.taskLists = boardObjectCopy.taskLists.filter(taskList => taskList.id !== taskListObjectId)
+        this.setState({boardObject: boardObjectCopy})
+    }
+
+    deleteTaskFromBoard(taskListObjectId, taskObjectId){
+        let boardObjectCopy = JSON.parse(JSON.stringify(this.state.boardObject))
+        let index = boardObjectCopy.taskLists.findIndex(taskList => taskList.id === taskListObjectId)
+        boardObjectCopy.taskLists[index].tasks = boardObjectCopy.taskLists[index].tasks.filter(task => task.id !== taskObjectId)
+        this.setState({boardObject: boardObjectCopy})
+
+    }
+
+    changePassepartoutVisibility(){
+        if(this.passepartoutRef.current.style.visibility === "visible"){
+            this.passepartoutRef.current.style.zIndex=0
+            this.passepartoutRef.current.style.visibility="hidden"
+        }else{
+            this.passepartoutRef.current.style.zIndex=20
+            this.passepartoutRef.current.style.visibility="visible"
+        }
     }
 
     getBoardById(){
@@ -48,12 +86,19 @@ class SpecificBoardPage extends Component {
     }
 
     render() {
-        console.log(this.state.boardObject)
         return (
             <div id="specific-board-page-container">
+                <div className="passepartout" ref={this.passepartoutRef}> </div>
                 <NavBar />
                 <Collaborators boardObject={this.state.boardObject} />
-                <TasksGrid boardObject={this.state.boardObject} addTaskListToBoard={this.addTaskListToBoard} />
+                <TasksGrid 
+                    boardObject={this.state.boardObject} 
+                    addTaskListToBoard={this.addTaskListToBoard}
+                    addTaskToBoard={this.addTaskToBoard}
+                    deleteTaskListFromBoard={this.deleteTaskListFromBoard} 
+                    deleteTaskFromBoard={this.deleteTaskFromBoard}
+                    changePassepartoutVisibility={this.changePassepartoutVisibility} 
+                />
             </div>
         );
     }

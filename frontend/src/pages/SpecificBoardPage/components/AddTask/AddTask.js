@@ -59,6 +59,13 @@ class AddTask extends Component {
                 assigneeId: null,
                 taskListId: String(this.state.taskListId)
             }
+        }).then((res) => {
+            this.closeModal()
+            this.props.addTaskToBoard(this.state.taskListId, {
+                id: res.data.addTask.id,
+                name: this.state.name,
+                assignee: null,
+            })
         })
     }
 
@@ -89,7 +96,7 @@ class AddTask extends Component {
                         </select>
                         
                         <div className="form-items" id="datetime-picker">
-                            <DateTimePickerComponent id="start-date" onChange = { (event) => { this.setState({startDate: event.target.value}); console.log(this.state.startDate )} } />
+                            <DateTimePickerComponent id="start-date" onChange = { (event) => { this.setState({startDate: event.target.value })}} />
                             <DateTimePickerComponent id="end-date" onChange = { (event) => this.setState({endDate: event.target.value}) } />
                         </div>
 

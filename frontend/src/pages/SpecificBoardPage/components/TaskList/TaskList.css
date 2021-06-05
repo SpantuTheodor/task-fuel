@@ -8,11 +8,31 @@
     align-items: center;
     justify-content: space-evenly;
     flex-shrink: 0;
+    position: relative;
 }
 
 .tasks-list-title{
     margin: 0;
     font-size: 22px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    max-width: 240px;
+}
+
+.tasks-list-xSymbol{
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    top:23px;
+    right:28px;
+}
+
+.tasks-list-xSymbol:hover{
+    filter: brightness(0%);
+    transition-duration: 0.25s;
+    cursor: pointer;
 }
 
 .hidden { display:none; }

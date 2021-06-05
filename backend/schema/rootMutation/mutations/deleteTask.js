@@ -5,12 +5,12 @@ const {
     GraphQLBoolean
 } = graphql;
 
-const Board = require('../../../models/board');
+const Task = require('../../../models/task');
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const deleteBoardMutation = {
+const deleteTaskMutation = {
     type: GraphQLBoolean,
     args: {
         id: {
@@ -19,7 +19,7 @@ const deleteBoardMutation = {
     },
     async resolve(parent, args) {
 
-        Board.deleteOne({ '_id': args.id }).then(function(){
+        Task.deleteOne({ '_id': args.id }).then(function(){
             return true
         }).catch(function(error){
             return false
@@ -27,4 +27,4 @@ const deleteBoardMutation = {
     }
 }
 
-module.exports = { deleteBoardMutation}
+module.exports = { deleteTaskMutation}

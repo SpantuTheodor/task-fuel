@@ -15,11 +15,12 @@
 
 .board-card p {
     margin:0;
-    padding-left: 10px;
+    padding-left: 15px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: #707070;
+    max-width: 195px;
+    color: #000000;
 }
 
 .board-card img {
@@ -37,7 +38,10 @@
     transition-duration: 0.25s;
 }
 
-.board-card p:nth-of-type(1) {
-    padding-top:10px;
+.board-card p:nth-of-type(1){
+    padding-top:12px;
+}
+
+.board-card p:nth-of-type(2){
     font-weight: bold;
 }

@@ -1,4 +1,4 @@
-.task-card {
+.task-card{
     background-color: #ffffff;
     height: 70px;
     width: 300px;
@@ -9,26 +9,82 @@
     flex-direction: column;
     justify-content: center;
     gap:5px;
+    position: relative;
 }
 
 .task-card:hover{
-    transform: scale(0.95);
-    transition-duration: 0.25s;
     background-color: #f6f6f6;
     box-shadow: 0px 5px 10px #aeaeae,
     0px -2px 10px #dddddd;
+    cursor: pointer;
 }
 
-.task-card p {
+.task-card p{
     padding-left: 10px;
     margin:0;
     display: block;
 }
 
-.task-card p:nth-of-type(1) {
+.task-card p:nth-of-type(1){
     font-size: 20px;
 }
 
-.task-card p:nth-of-type(2) {
+.task-card p:nth-of-type(2){
     font-size: 14px;
+}
+
+.task-card-threeDotsSymbol{
+    height: 20px;
+    width: 20px;
+    position: absolute;
+    top: 14px;
+    right:15px;
+    display: none;
+}
+
+.task-card:hover .task-card-threeDotsSymbol{
+    display: block;
+}
+
+.task-card-threeDotsSymbol:hover{
+    filter: brightness(0%);
+    transition-duration: 0.15s;
+}
+
+.task-card ul{
+    top: 30px;
+    right:15px;
+    position: absolute;
+    background-color: #ffffff;
+    margin: 0;
+    padding: 10px 0;
+    flex-direction: column;
+    justify-content: space-evenly;
+    display:flex;
+    gap:10px;
+    visibility: hidden;
+    border-radius: 10px;
+    list-style-type: none;
+    box-shadow: 0px 5px 10px #aeaeae,
+    0px -2px 10px #dddddd;
+}
+
+.task-card ul li{
+    padding: 0 10px;
+}
+
+.task-card ul li:hover{
+    transform: scale(0.95);
+    transition-duration: 0.25s;
+}
+
+.passepartout{
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    position: fixed;
+    background-color: #000000;
+    opacity: 20%;
+    visibility: hidden;
 }
