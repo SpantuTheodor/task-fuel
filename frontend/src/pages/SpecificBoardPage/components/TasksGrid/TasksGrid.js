@@ -17,10 +17,13 @@ class TasksGrid extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        if(nextProps.boardObject!==this.props.boardObject){
-            this.setState({boardObject: nextProps.boardObject });
+    static getDerivedStateFromProps(props, state){
+        if(props.boardObject !== state.boardObject){
+            return {
+                boardObject: props.boardObject
+            }
         }
+        return null 
     }
 
     render(){
@@ -52,6 +55,7 @@ class TasksGrid extends Component {
                     addTaskListToBoard={this.props.addTaskListToBoard} 
                 />
 
+                <div className="horizontal-spacer"></div>
                 </div>
                             
             </div>

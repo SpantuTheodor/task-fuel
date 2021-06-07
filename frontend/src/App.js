@@ -5,6 +5,7 @@ import LoginPage from './pages/LoginPage/LoginPage'
 import RegisterPage from './pages/RegisterPage/RegisterPage'
 import DisplayBoardsPage from './pages/DisplayBoardsPage/DisplayBoardsPage'
 import SpecificBoardPage from './pages/SpecificBoardPage/SpecificBoardPage'
+import SpecificTaskPage from './pages/SpecificTaskPage/SpecificTaskPage'
 
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
@@ -91,6 +92,7 @@ class App extends Component{
                 {!this.state.token && <Redirect from="/" to="/register" exact />}
                 <Route exact path="/:username/boards" component={({match}) => { return(<DisplayBoardsPage match={match} />)}} />
                 <Route exact path="/:username/board/:boardId" component={({match}) => { return(<SpecificBoardPage match={match} />)}} />
+                <Route exact path="/:username/board/:boardId/task/:taskId" component={({match}) => { return(<SpecificTaskPage match={match} />)}} />
                 <Route exact path="/login" component={LoginPage} />
                 <Route exact path="/register" component={RegisterPage} />
                 <Route path ="/" component={SpecificBoardPage} />

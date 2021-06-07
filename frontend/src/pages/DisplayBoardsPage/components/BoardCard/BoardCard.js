@@ -1,7 +1,6 @@
 import "./BoardCard.css"
 
 import deleteBoardMutation from "../../../../mutations/deleteBoardMutation"
-import getBoardsByUserIdQuery from '../../../../queries/getBoardsByUserIdQuery'
 import AuthenticationContext from '../../../../contexts/authenticationContext'
 import xSymbol from '../../../../assets/x-icon.png'
 
@@ -37,7 +36,7 @@ class BoardCard extends Component {
     render() { 
         return (
             <div className="board-card">
-                <img src={xSymbol} onClick={this.deleteBoard} />
+                <img src={xSymbol} onClick={this.deleteBoard} alt="delete board button" />
                 <p> {this.props.name} </p>
                 <p> {this.props.owner.name} </p>
             </div>

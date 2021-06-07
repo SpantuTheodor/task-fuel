@@ -28,6 +28,7 @@ class AddTaskList extends Component {
             }
         }).then((res) => {
             this.props.addTaskListToBoard({id: res.data.addTaskList.id, name: String(this.addTaskListInputRef.current.value), boardId: this.props.boardObject.id, tasks: []})
+            this.addTaskListInputRef.current.value = null
         })
     }
 

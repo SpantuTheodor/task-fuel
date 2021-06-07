@@ -12,6 +12,8 @@ import { ExpirationPlugin } from 'workbox-expiration';
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
 import { StaleWhileRevalidate } from 'workbox-strategies';
+import { createStore, set as idbSet, get as idbGet} from 'idb-keyval';
+const CryptoJS = require("crypto-js");
 
 clientsClaim();
 
@@ -70,3 +72,114 @@ self.addEventListener('message', (event) => {
 });
 
 // Any other custom service worker logic can go here.
+
+const STATIC_CACHE = 'site-static'
+const store = createStore('GraphQL-Cache', 'PostResponses');
+
+// workbox.routing.registerRoute(
+//   new RegExp('/graphql(/)?'),
+//   // Uncomment below to see the error thrown from Cache Storage API.
+//   //workbox.strategies.staleWhileRevalidate(),
+//   async ({
+//     event
+//   }) => {
+//     return staleWhileRevalidate(event);
+//   },
+//   'POST'
+// );
+
+self.addEventListener('activate', (event) => {
+  console.log("Service worker has been activated.")
+})
+
+self.addEventListener('fetch', async (event) => {
+  let graphQLRegularExpression = new RegExp('graphql')
+  if (event.request.method === 'POST' && graphQLRegularExpression.test(event.request.url)) {
+    event.respondWith(staleWhileRevalidate(event))
+  }
+})
+
+async function staleWhileRevalidate(event) {
+  let cachedResponse = await getCache(event.request.clone());
+  let fetchPromise = fetch(event.request.clone())
+    .then((response) => {
+      setCache(event.request.clone(), response.clone());
+      return response;
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  return cachedResponse ? Promise.resolve(cachedResponse) : fetchPromise
+}
+
+async function serializeResponse(response) {
+  let serializedHeaders = {};
+  for (var entry of response.headers.entries()) {
+    serializedHeaders[entry[0]] = entry[1];
+  }
+  let serialized = {
+    headers: serializedHeaders,
+    status: response.status,
+    statusText: response.statusText
+  };
+  serialized.body = await response.json();
+  return serialized;
+}
+
+async function setCache(request, response) {
+  let body = await request.json();
+  console.log("Body ", body)
+
+  if(body.query.startsWith("query")){
+
+    let bodyVariables;
+    for (const [key, value] of Object.entries(body.variables)) {
+      bodyVariables = String(key) + String(value);
+    }
+
+    let id = CryptoJS.MD5(body.query + bodyVariables).toString();
+
+    console.log(`Setting response to cache.`);
+
+    var entry = {
+      query: body.query,
+      response: await serializeResponse(response),
+      timestamp: Date.now()
+    };
+    idbSet(id, entry, store);
+
+  }
+}
+
+async function getCache(request) {
+  let data;
+  try {
+    let body = await request.json();
+
+    if(body.query.startsWith("query")){
+
+      let bodyVariables;
+      for (const [key, value] of Object.entries(body.variables)) {
+        bodyVariables = String(key) + String(value);
+      }
+      let id = CryptoJS.MD5(body.query + bodyVariables).toString();
+      data = await idbGet(id, store);
+      if (!data) return null;
+
+      // Check cache max age.
+      let cacheControl = request.headers.get('Cache-Control');
+      let maxAge = cacheControl ? parseInt(cacheControl.split('=')[1]) : 3600;
+      if (Date.now() - data.timestamp > maxAge * 1000) {
+        console.log(`Cache expired. Load from API endpoint.`);
+        return null;
+      }
+
+      console.log(`Load response from cache.`);
+      return new Response(JSON.stringify(data.response.body), data.response);
+    }
+
+  } catch (err) {
+    return null;
+  }
+  
+}

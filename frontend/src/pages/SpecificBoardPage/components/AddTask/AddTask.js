@@ -73,7 +73,7 @@ class AddTask extends Component {
         return (
             <div>
                 <div className="add-task-button" onClick={this.openModal}>
-                    <img className="add-task-plus-symbol"src={plusSymbol} />
+                    <img className="add-task-plus-symbol"src={plusSymbol} alt="add task button"/>
                     <p className="add-task-p"> Add task </p>
                 </div>
                     

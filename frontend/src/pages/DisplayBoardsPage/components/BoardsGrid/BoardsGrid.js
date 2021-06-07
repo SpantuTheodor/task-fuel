@@ -35,7 +35,7 @@ class BoardsGrid extends Component {
             
             let boardCardIdToDelete = this.props.boardCardIdToDelete
             let newBoards = this.state.boards.filter(function(board) {
-                return board.id != boardCardIdToDelete;
+                return board.id !== boardCardIdToDelete;
             });
 
             this.setState({
@@ -57,7 +57,8 @@ class BoardsGrid extends Component {
             query: getUserByUsernameQuery,
             variables: {
                 username: this.props.username
-            }
+            },
+            fetchPolicy: 'no-cache'
         }).then((res) => {
             this.setState({userId: res.data.userByUsername.id, username: this.props.username})
         }).then(() => {
@@ -75,7 +76,7 @@ class BoardsGrid extends Component {
         }).then((res) => {
             let newBoards = []
             res.data.boardsByUserId.map(board => {
-                newBoards.push({
+                return newBoards.push({
                     id:   board.id,
                     name: board.name,
                     tasks: board.tasks,

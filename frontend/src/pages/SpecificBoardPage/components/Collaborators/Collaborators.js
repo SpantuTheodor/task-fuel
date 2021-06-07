@@ -9,10 +9,13 @@ class Collaborators extends Component {
         this.state = { boardObject: this.props.boardObject }
     }
 
-    componentWillReceiveProps(nextProps) {
-        if(nextProps.boardObject!==this.props.boardObject){
-            this.setState({boardObject: nextProps.boardObject });
-        }
+    static getDerivedStateFromProps(props, state){
+        if(props.boardObject !== state.boardObject){
+            return {
+                boardObject: props.boardObject
+            }
+        } 
+        return null;
     }
 
     render() {

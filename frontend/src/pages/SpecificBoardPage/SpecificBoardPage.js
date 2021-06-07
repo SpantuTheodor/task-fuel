@@ -88,8 +88,8 @@ class SpecificBoardPage extends Component {
     render() {
         return (
             <div id="specific-board-page-container">
-                <div className="passepartout" ref={this.passepartoutRef}> </div>
                 <NavBar />
+                <div className="passepartout" ref={this.passepartoutRef}> </div>
                 <Collaborators boardObject={this.state.boardObject} />
                 <TasksGrid 
                     boardObject={this.state.boardObject} 

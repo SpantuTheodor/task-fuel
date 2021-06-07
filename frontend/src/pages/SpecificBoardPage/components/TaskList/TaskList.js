@@ -4,7 +4,9 @@ import TaskCard from "../TaskCard/TaskCard"
 import AddTask from "../AddTask/AddTask"
 import xSymbol from "../../../../assets/x-icon.png"
 import deleteTaskListMutation from "../../../../mutations/deleteTaskListMutation"
+import AuthenticationContext from "../../../../contexts/authenticationContext"
 
+import { Link } from 'react-router-dom';
 import React, { Component } from 'react'
 import { withApollo } from "react-apollo"
 
@@ -27,6 +29,8 @@ class TaskList extends Component {
 
     }
 
+    static contextType = AuthenticationContext
+
     componentDidUpdate(){
         this.inputRef.current.select();
         if(this.state.showInputItem){
@@ -34,10 +38,15 @@ class TaskList extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        if(nextProps.boardObject!==this.props.boardObject){
-            this.setState({boardObject: nextProps.boardObject, tasks: nextProps.tasks, containerHeight: `${120 + nextProps.tasks.length*85}px`});
-        }
+    static getDerivedStateFromProps(props, state){
+        if(props.boardObject !== state.boardObject){
+            return {
+                boardObject: props.boardObject,
+                tasks: props.tasks,
+                containerHeight: `${120 + props.tasks.length*85}px`
+            }
+        } 
+        return null
     }
 
     handleNameChange(event){
@@ -68,25 +77,27 @@ class TaskList extends Component {
         return ( 
             <div className="tasks-list-container" style={{height: this.state.containerHeight}}>
                 
-                <img className="tasks-list-xSymbol" src={xSymbol} onClick={this.deleteTaskList} />
+                <img className="tasks-list-xSymbol" src={xSymbol} onClick={this.deleteTaskList} alt="delete task list button"/>
                 <p className={this.state.showInputItem ? 'tasks-list-title hidden' : 'tasks-list-title'} onClick={this.handleNameChange}> {this.state.name} </p>
-                <input id={`list-${this.props.name}`} className={!this.state.showInputItem ? 'tasks-list-title hidden' : 'tasks-list-title'} type="text" defaultValue={this.state.name} ref={this.inputRef}/>
+                <input className={!this.state.showInputItem ? 'tasks-list-title hidden' : 'tasks-list-title'} type="text" defaultValue={this.state.name} ref={this.inputRef}/>
                 
                 {this.state && this.state.tasks.length ? 
                     <div className="task-cards-container">
                         {
                             this.state.tasks.map(task => {
                                 return(
-                                    <TaskCard 
-                                        key={task.id}
-                                        taskListId={this.state.taskListId}
-                                        taskId={task.id}
-                                        name={task.name} 
-                                        description={task.description} 
-                                        assignee={task.assignee}
-                                        deleteTaskFromBoard={this.props.deleteTaskFromBoard}
-                                        changePassepartoutVisibility={this.props.changePassepartoutVisibility}
-                                    />
+                                    <Link key={task.id} to={`/${this.context.username}/board/${this.state.boardObject.id}/task/${task.id}`} className="task-card-anchor">
+                                        <TaskCard 
+                                            key={task.id}
+                                            taskListId={this.state.taskListId}
+                                            taskId={task.id}
+                                            name={task.name} 
+                                            description={task.description} 
+                                            assignee={task.assignee}
+                                            deleteTaskFromBoard={this.props.deleteTaskFromBoard}
+                                            changePassepartoutVisibility={this.props.changePassepartoutVisibility}
+                                        />
+                                    </Link>
                                 )
                             })
                         }
