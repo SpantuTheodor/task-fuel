@@ -52,7 +52,8 @@ class Menu extends Component {
             }
         }).then((res) => {
             this.closeModal()
-            this.props.createBoardCard(res.data.createBoard)
+            console.log("DAAAAAAAAAAA,", res)
+            return res.data ? this.props.createBoardCard(res.data.createBoard) : null
         })
     }
 

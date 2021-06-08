@@ -73,8 +73,8 @@ self.addEventListener('message', (event) => {
 
 // Any other custom service worker logic can go here.
 
-const STATIC_CACHE = 'site-static'
 const store = createStore('GraphQL-Cache', 'PostResponses');
+const mutationStore = createStore('GraphQL-Mutations-Cache', 'MutationQueue')
 
 // workbox.routing.registerRoute(
 //   new RegExp('/graphql(/)?'),
@@ -95,21 +95,67 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', async (event) => {
   let graphQLRegularExpression = new RegExp('graphql')
   if (event.request.method === 'POST' && graphQLRegularExpression.test(event.request.url)) {
-    event.respondWith(staleWhileRevalidate(event))
+    try{
+      await event.respondWith(staleWhileRevalidate(event))
+    }catch(err){
+      console.log("error: ", err)
+    }
   }
 })
 
 async function staleWhileRevalidate(event) {
-  let cachedResponse = await getCache(event.request.clone());
-  let fetchPromise = fetch(event.request.clone())
-    .then((response) => {
-      setCache(event.request.clone(), response.clone());
-      return response;
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-  return cachedResponse ? Promise.resolve(cachedResponse) : fetchPromise
+
+  let body = await event.request.clone().json()
+  console.log(body)
+  if(body.query.startsWith("query")){
+    let cachedResponse = await getCache(event.request.clone());
+    let fetchPromise = fetch(event.request.clone())
+      .then((response) => {
+        setCache(event.request.clone(), response.clone());
+        return response;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    console.log(1)
+    return cachedResponse ? Promise.resolve(cachedResponse) : fetchPromise
+  
+  
+  } else if(body.query.startsWith("mutation")){
+    if (!navigator.onLine) {
+
+      return serialize(event.request).then(async (serialized) => {
+  
+        let queue = (await idbGet("queue", mutationStore)) || []
+
+        console.log("DATA BP", queue)
+        queue.push(serialized)
+        console.log("DATA AP", queue)
+        console.log(`Setting response to cache.`);
+
+        idbSet('queue', queue, mutationStore);
+
+        console.log(queue)
+        console.log(2)
+
+        return new Response(
+          JSON.stringify([{
+            text: 'You are offline and I know it well.',
+            author: 'The Service Worker Cookbook',
+            id: 1,
+            isSticky: true
+          }]),
+          { headers: { 'Content-Type': 'application/json' } }
+        )
+      })
+
+    } else {
+      console.log(3)
+      flushQueue()
+      return fetch(event.request.clone())
+    }
+  }
+
 }
 
 async function serializeResponse(response) {
@@ -147,8 +193,8 @@ async function setCache(request, response) {
       timestamp: Date.now()
     };
     idbSet(id, entry, store);
-
   }
+
 }
 
 async function getCache(request) {
@@ -183,3 +229,58 @@ async function getCache(request) {
   }
   
 }
+
+function serialize(request) {
+  var headers = {};
+
+  for (var entry of request.headers.entries()) {
+    headers[entry[0]] = entry[1];
+  }
+  var serialized = {
+    url: request.url,
+    headers: headers,
+    method: request.method,
+    mode: request.mode,
+    credentials: request.credentials,
+    cache: request.cache,
+    redirect: request.redirect,
+    referrer: request.referrer
+  };
+
+  return Promise.resolve(serialized);
+}
+
+async function flushQueue() {
+
+    return await idbGet("queue", mutationStore).then((queue) => {
+      /* eslint no-param-reassign: 0 */
+      queue = queue || [];
+
+      if (!queue.length) {
+        return Promise.resolve();
+      }
+
+      console.log('Sending ', queue.length, ' requests...');
+      return sendInOrder(queue).then(function() {
+
+        return idbSet('queue', [], mutationStore);
+        
+      })
+    })
+  }
+
+  function sendInOrder(requests) {
+      var sending = requests.reduce((prevPromise, serialized) => {
+        console.log('Sending', serialized.method, serialized.url);
+        return prevPromise.then(() => {
+          return deserialize(serialized).then(function(request) {
+            return fetch(request);
+          });
+        });
+      }, Promise.resolve());
+      return sending;
+    }
+
+    function deserialize(data) {
+      return Promise.resolve(new Request(data.url, data));
+    }
