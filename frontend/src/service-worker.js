@@ -230,13 +230,16 @@ async function getCache(request) {
   
 }
 
-function serialize(request) {
+async function serialize(request) {
   var headers = {};
+
+  let data = await request.json()
 
   for (var entry of request.headers.entries()) {
     headers[entry[0]] = entry[1];
   }
   var serialized = {
+    body: JSON.stringify(data),
     url: request.url,
     headers: headers,
     method: request.method,
@@ -246,6 +249,7 @@ function serialize(request) {
     redirect: request.redirect,
     referrer: request.referrer
   };
+console.log("REQUEST", request)
 
   return Promise.resolve(serialized);
 }
@@ -273,11 +277,12 @@ async function flushQueue() {
       var sending = requests.reduce((prevPromise, serialized) => {
         console.log('Sending', serialized.method, serialized.url);
         return prevPromise.then(() => {
-          return deserialize(serialized).then(function(request) {
+          return deserialize(serialized).then((request) =>{
             return fetch(request);
           });
         });
       }, Promise.resolve());
+      console.log("SENDING", sending)
       return sending;
     }
 
