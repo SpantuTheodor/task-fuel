@@ -11,7 +11,9 @@ const _ = require('lodash');
 
 const Task = require('../../../models/task.js')
 const LogEntry = require('../../../models/logEntry.js')
-const { TaskType } = require('../../objectTypes.js')
+const Board = require('../../../models/board.js')
+
+const { TaskType } = require('../../objectTypes.js');
 
 const updateTaskMutation = {
     type: TaskType,
@@ -69,6 +71,10 @@ const updateTaskMutation = {
             })
 
             logEntry.save()
+
+            await Board.updateOne({
+                '_id': args.boardId
+            }, { $push: {logEntryIds: logEntry.id }}, { upsert: true })
         }
 
         await Task.updateOne({

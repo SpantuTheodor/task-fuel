@@ -15,6 +15,7 @@ const User = require('../models/user.js')
 const Task = require('../models/task.js')
 const Board = require('../models/board.js')
 const TaskList = require('../models/taskList')
+const LogEntry = require('../models/logEntry')
 
 const TaskType = new GraphQLObjectType({
     name: "Task",
@@ -129,6 +130,16 @@ const BoardType = new GraphQLObjectType({
                     }
                 }) 
             }
+        },
+        logEntries: {
+            type: new GraphQLList(LogEntryType),
+            async resolve(parent, args){
+                return await LogEntry.find({
+                    '_id': {
+                        $in: parent.logEntryIds
+                    }
+                }) 
+            }
         }
 
     })
@@ -183,6 +194,9 @@ const AuthenticationType = new GraphQLObjectType({
 const LogEntryType = new GraphQLObjectType({
     name: "LogEntry",
     fields: () => ({
+        id: {
+            type: GraphQLID
+        },
         method: {
             type: new GraphQLNonNull(GraphQLString)
         },

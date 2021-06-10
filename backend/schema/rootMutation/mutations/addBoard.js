@@ -28,6 +28,9 @@ const addBoardMutation = {
         },
         taskListIds: {
             type: new GraphQLList(GraphQLID)
+        },
+        logEntryIds: {
+            type: new GraphQLList(GraphQLID)
         }
 
     },
@@ -38,7 +41,8 @@ const addBoardMutation = {
             name: args.name,
             ownerId: args.ownerId,
             userIds: newUserIds,
-            taskListIds: args.taskListIds
+            taskListIds: args.taskListIds,
+            logEntryIds: args.logEntryIds
         })
 
         await User.updateOne({

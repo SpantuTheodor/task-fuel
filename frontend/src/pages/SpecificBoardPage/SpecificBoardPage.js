@@ -2,6 +2,7 @@ import NavBar from '../../shared/components/Navbar/Navbar'
 import Collaborators from './components/Collaborators/Collaborators'
 import TasksGrid from './components/TasksGrid/TasksGrid'
 import getBoardByIdQuery from '../../queries/getBoardByIdQuery'
+import Log from './components/Log/Log'
 
 import React, { Component } from 'react';
 import { withApollo } from "react-apollo";
@@ -91,7 +92,12 @@ class SpecificBoardPage extends Component {
             <div id="specific-board-page-container">
                 <NavBar />
                 <div className="passepartout" ref={this.passepartoutRef}> </div>
-                <Collaborators boardObject={this.state.boardObject} />
+                
+                <div id="left-side-container">
+                    <Collaborators boardObject={this.state.boardObject} />
+                    <Log boardId={this.state.boardId} />
+                </div>
+                
                 <TasksGrid 
                     boardObject={this.state.boardObject} 
                     addTaskListToBoard={this.addTaskListToBoard}

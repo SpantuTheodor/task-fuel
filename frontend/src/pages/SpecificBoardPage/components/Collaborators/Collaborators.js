@@ -20,7 +20,7 @@ class Collaborators extends Component {
 
     render() {
         return (
-            <div id="collaborators-container">
+            <div>
                 <h1> Collaborators </h1>
         
                 {
