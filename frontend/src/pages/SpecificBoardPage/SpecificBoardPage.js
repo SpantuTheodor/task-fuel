@@ -78,7 +78,8 @@ class SpecificBoardPage extends Component {
             query: getBoardByIdQuery,
             variables: {
                 id: this.state.boardId
-            }
+            },
+            fetchPolicy: 'no-cache'
         }).then((res) => {
             this.setState({boardObject: res.data.board})
         })

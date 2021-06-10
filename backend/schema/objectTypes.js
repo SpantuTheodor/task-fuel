@@ -8,8 +8,6 @@ const {
 } = graphql
 
 const {
-    GraphQLDate,
-    GraphQLTime,
     GraphQLDateTime
 } = require('graphql-iso-date')
 
@@ -59,6 +57,15 @@ const TaskType = new GraphQLObjectType({
                     '_id': parent.taskListId
                 })
             }
+        }, 
+        location: {
+            type: GraphQLString
+        },
+        status: {
+            type: new GraphQLNonNull(GraphQLString)
+        }, 
+        resource: {
+            type: GraphQLString
         }
     }),
 });

@@ -42,6 +42,7 @@ class SpecificTaskPage extends Component {
                 <Navbar />
                 <div className="specific-task-container">
                     <h1>Name: {this.state.taskObject && this.state.taskObject.name ? this.state.taskObject.name : "No name to display"}</h1>
+
                     <h3>Task details</h3>
                     <p>Assignee: {this.state.taskObject && this.state.taskObject.assignee ? this.state.taskObject.assignee.name : "No name to display"}</p>
                     <p>Collaborators: {this.state.taskObject && this.state.taskObject.name}</p>

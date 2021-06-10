@@ -2,20 +2,23 @@ const graphql = require("graphql")
 const {
     GraphQLString,
     GraphQLID,
-    GraphQLList,
     GraphQLNonNull,
+    GraphQLList
 } = graphql
 
 const { GraphQLDateTime } = require('graphql-iso-date')
 const Task = require('../../../models/task.js')
-const TaskList = require('../../../models/taskList.js')
 const { TaskType } = require('../../objectTypes.js')
+const _ = require('lodash');
 
-const addTaskMutation = {
+const updateTaskMutation = {
     type: TaskType,
     args: {
+        id: {
+            type: new GraphQLNonNull(GraphQLID)
+        },
         name: {
-            type: new GraphQLNonNull(GraphQLString)
+            type: GraphQLString
         },
         description: {
             type: GraphQLString
@@ -32,14 +35,11 @@ const addTaskMutation = {
         collaboratorIds: {
             type: new GraphQLList(GraphQLID)
         },
-        taskListId: {
-            type: new GraphQLNonNull(GraphQLID)
-        },
         location: {
             type: GraphQLString
         },
         status: {
-            type: new GraphQLNonNull(GraphQLString)
+            type: GraphQLString
         },
         resource: {
             type: GraphQLString
@@ -51,26 +51,24 @@ const addTaskMutation = {
         if(!req.isAuthenticated){
             throw new Error('Unauthenticated')
         }
+        
+        await Task.updateOne({
+            '_id': args.id
+        }, {$set:
+            _.pickBy({
+                name: args.name,
+                description: args.description,
+                startDate: args.startDate,
+                endDate: args.endDate,
+                assigneeId: args.assigneeId,
+                collaboratorIds: args.collaboratorIds,
+                location: args.location,
+                status: args.status,
+                resource: args.resource
+            }, _.identity),
+        }, { upsert: true })
 
-        let task = new Task({
-            name: args.name,
-            description: args.description,
-            startDate: args.startDate,
-            endDate: args.endDate,
-            assigneeId: args.assigneeId,
-            collaboratorIds: args.collaboratorIds,
-            taskListId: args.taskListId,
-            location: args.location,
-            status: args.status,
-            resource: args.resource
-        })
-
-        await TaskList.updateOne({
-            '_id': task.taskListId
-        }, { $push: {taskIds: task.id }}, { upsert: true })
-
-        return task.save()
     }
 }
 
-module.exports = { addTaskMutation }
+module.exports = { updateTaskMutation }

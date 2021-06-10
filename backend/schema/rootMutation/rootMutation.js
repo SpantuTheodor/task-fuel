@@ -11,6 +11,7 @@ const { createBoardMutation } = require("./mutations/createBoard")
 const { deleteBoardMutation } = require("./mutations/deleteBoard")
 const { deleteTaskListMutation } = require("./mutations/deleteTaskList")
 const { deleteTaskMutation } = require("./mutations/deleteTask")
+const { updateTaskMutation } = require("./mutations/updateTask")
 
 const RootMutation = new GraphQLObjectType({
     name: 'RootMutation',
@@ -18,11 +19,12 @@ const RootMutation = new GraphQLObjectType({
         addTask: addTaskMutation,
         addUser: addUserMutation,
         addBoard: addBoardMutation,
+        addTaskList: addTaskListMutation,
         createBoard: createBoardMutation,
         deleteBoard: deleteBoardMutation,
         deleteTaskList: deleteTaskListMutation,
         deleteTask: deleteTaskMutation,
-        addTaskList: addTaskListMutation,
+        updateTask: updateTaskMutation,
         signUp: signUpMutation,
         logIn: logInMutation,
     }

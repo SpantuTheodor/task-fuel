@@ -1,7 +1,7 @@
 import "./AddTask.css"
 
 import plusSymbol from '../../../../assets/plus-symbol-icon.png'
-import addTaskMutation from '../../../../mutations/addTaskMutation'
+import createTaskMutation from '../../../../mutations/createTaskMutation'
 
 import React, { Component } from "react"
 import ReactModal from 'react-modal'
@@ -25,18 +25,21 @@ class AddTask extends Component {
 
     constructor(props){
         super(props)
-        this.usersInputSelectRef = React.createRef()
         this.state = {
             name: "",
             description: "",
-            startDate: new Date(),
-            endDate: new Date(),
+            startDate: null,
+            endDate: null,
+            location: "",
+            assigneeId: "",
+            assigneeName: "",
             modalIsOpen: false,
             boardObject: this.props.boardObject,
-            taskListId: this.props.taskListId
+            taskListId: this.props.taskListId,
         }
         this.openModal = this.openModal.bind(this)
         this.closeModal = this.closeModal.bind(this)
+        this.stateReset = this.stateReset.bind(this)
     }
 
     openModal(){
@@ -47,25 +50,45 @@ class AddTask extends Component {
         this.setState({modalIsOpen: false})
     }
 
+    stateReset(){
+        this.setState({
+            name: "",
+            description: "",
+            startDate: null,
+            endDate: null,
+            location: "",
+            assigneeId: ""
+        })
+    }
+
     submitForm(event){
+
         event.preventDefault();
+        console.log(this.state.boardObject.users.filter(assignee => assignee.id === this.state.assigneeId)[0].name)
         this.props.client.mutate({
-            mutation: addTaskMutation,
+            mutation: createTaskMutation,
             variables: {
                 name: this.state.name,
                 description: this.state.description,
                 startDate: this.state.startDate,
                 endDate: this.state.endDate,
-                assigneeId: null,
-                taskListId: String(this.state.taskListId)
+                assigneeId: this.state.assigneeId,
+                taskListId: String(this.state.taskListId),
+                location: this.state.location,
+                status: "not yet started",
             }
         }).then((res) => {
             this.closeModal()
+
             this.props.addTaskToBoard(this.state.taskListId, {
                 id: res.data.addTask.id,
                 name: this.state.name,
-                assignee: null,
+                assignee: {
+                    id: this.state.assigneeId,
+                    name: this.state.boardObject.users.filter(assignee => assignee.id === this.state.assigneeId)[0].name
+                }
             })
+            
         })
     }
 
@@ -85,10 +108,10 @@ class AddTask extends Component {
                     >
                     
                     <form id="add-task" onSubmit={ this.submitForm.bind(this) }>
-                        <input className="form-items" type="text" placeholder="Task title" onChange = { (event) => this.setState({name: event.target.value}) } />
-                        <textarea className="form-items" form="add-task" placeholder="Description" onChange = { (event) => this.setState({description: event.target.value}) } />                
+                        <input name="title" className="form-items" type="text" placeholder="Task title" onChange = { (event) => this.setState({name: event.target.value}) } />
+                        <textarea name="description" className="form-items" form="add-task" placeholder="Description" onChange = { (event) => this.setState({description: event.target.value}) } />                
                         
-                        <select defaultValue={"default"} ref={this.usersInputSelectRef}>
+                        <select name="assignee" defaultValue={"default"} onChange = { (event) => this.setState({assigneeId: event.target.value}) }>
                             <option value="default" disabled>None</option>
                             {this.state.boardObject.users.map(collaborator =>
                                 <option key={collaborator.id} value={collaborator.id}>{collaborator.name}</option>
@@ -96,9 +119,11 @@ class AddTask extends Component {
                         </select>
                         
                         <div className="form-items" id="datetime-picker">
-                            <DateTimePickerComponent id="start-date" onChange = { (event) => { this.setState({startDate: event.target.value })}} />
-                            <DateTimePickerComponent id="end-date" onChange = { (event) => this.setState({endDate: event.target.value}) } />
+                            <DateTimePickerComponent name="startDate" id="start-date" onChange = { (event) => { this.setState({startDate: event.target.value })}} />
+                            <DateTimePickerComponent name="endDate" id="end-date" onChange = { (event) => this.setState({endDate: event.target.value}) } />
                         </div>
+
+                        <input name="location" className="form-items" type="text" form="add-task" placeholder="location" onChange = { (event) => this.setState({location: event.target.value}) } />
 
                         <input className="form-items" type="submit" />
                     </form>

@@ -2,6 +2,7 @@ import "./TaskCard.css"
 
 import threeDotsSymbol from "../../../../assets/three-dots-icon.png"
 import deleteTaskMutation from "../../../../mutations/deleteTaskMutation"
+import updateTaskMutation from "../../../../mutations/updateTaskMutation"
 
 import React, { Component } from 'react'
 import { withApollo } from "react-apollo"
@@ -49,6 +50,16 @@ class TaskCard extends Component {
         })
     }
 
+    updateTaskStatus(status){
+        this.props.client.mutate({
+            mutation: updateTaskMutation,
+            variables: {
+                id: this.state.taskId,
+                status: status
+            }
+        })
+    }
+
     render() { 
         return (
             <div className="task-card" ref={this.taskCardRef}>
@@ -56,9 +67,9 @@ class TaskCard extends Component {
                 <img className="task-card-threeDotsSymbol" src={threeDotsSymbol} onClick={this.changeVisibility} alt="more options button" />
                     
                 <ul ref={this.dropdownMenuRef}>
-                        <li> Mark as Done </li>
-                        <li> Mark as In Progress </li>
-                        <li> Mark as Canceled </li>
+                        <li onClick={this.updateTaskStatus("done")} > Mark as Done </li>
+                        <li onClick={this.updateTaskStatus("in progress")} > Mark as In Progress </li>
+                        <li onClick={this.updateTaskStatus("canceled")} > Mark as Canceled </li>
                         <li onClick={this.deleteTask}> Delete Task</li>
                 </ul>
                     
