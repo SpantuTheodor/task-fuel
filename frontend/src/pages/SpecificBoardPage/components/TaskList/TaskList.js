@@ -89,11 +89,13 @@ class TaskList extends Component {
                                     <Link key={task.id} to={`/${this.context.username}/board/${this.state.boardObject.id}/task/${task.id}`} className="task-card-anchor">
                                         <TaskCard 
                                             key={task.id}
+                                            boardId={this.state.boardObject.id}
                                             taskListId={this.state.taskListId}
                                             taskId={task.id}
                                             name={task.name} 
                                             description={task.description} 
                                             assignee={task.assignee}
+                                            status={task.status}
                                             deleteTaskFromBoard={this.props.deleteTaskFromBoard}
                                             changePassepartoutVisibility={this.props.changePassepartoutVisibility}
                                         />

@@ -40,7 +40,7 @@
     padding-top:5px;
     padding-bottom: 5px;
     position: absolute;
-    top: 14px;
+    top: 3px;
     right:15px;
     display: none;
 }
@@ -90,4 +90,12 @@
     background-color: #000000;
     opacity: 20%;
     visibility: hidden;
+}
+
+.task-card-verifiedSymbol{
+    position:absolute;
+    height: 15px;
+    width:15px;
+    bottom:15px;
+    right:17px;
 }

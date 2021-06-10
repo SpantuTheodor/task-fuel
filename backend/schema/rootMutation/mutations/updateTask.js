@@ -7,14 +7,22 @@ const {
 } = graphql
 
 const { GraphQLDateTime } = require('graphql-iso-date')
-const Task = require('../../../models/task.js')
-const { TaskType } = require('../../objectTypes.js')
 const _ = require('lodash');
+
+const Task = require('../../../models/task.js')
+const LogEntry = require('../../../models/logEntry.js')
+const { TaskType } = require('../../objectTypes.js')
 
 const updateTaskMutation = {
     type: TaskType,
     args: {
         id: {
+            type: new GraphQLNonNull(GraphQLID)
+        },
+        boardId: {
+            type: new GraphQLNonNull(GraphQLID)
+        },
+        taskId: {
             type: new GraphQLNonNull(GraphQLID)
         },
         name: {
@@ -52,6 +60,17 @@ const updateTaskMutation = {
             throw new Error('Unauthenticated')
         }
         
+        if(args.status){
+            let logEntry = new LogEntry({
+                method: args.status,
+                boardId: args.boardId,
+                taskId: args.id,
+                date: new Date()
+            })
+
+            logEntry.save()
+        }
+
         await Task.updateOne({
             '_id': args.id
         }, {$set:

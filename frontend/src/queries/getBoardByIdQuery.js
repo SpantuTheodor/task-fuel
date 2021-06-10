@@ -22,6 +22,7 @@ const getBoardByIdQuery = gql`
                     assignee {
                         name
                     }
+                    status
                 }
             }
         }

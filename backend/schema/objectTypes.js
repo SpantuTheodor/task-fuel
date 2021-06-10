@@ -180,10 +180,35 @@ const AuthenticationType = new GraphQLObjectType({
     })
 })
 
+const LogEntryType = new GraphQLObjectType({
+    name: "LogEntry",
+    fields: () => ({
+        method: {
+            type: new GraphQLNonNull(GraphQLString)
+        },
+        board: {
+            type: BoardType,
+            resolve(parent, args){
+                return Board.findById(parent.boardId);
+            }
+        },
+        task: {
+            type: TaskType,
+            resolve(parent, args){
+                return Task.findById(parent.taskId);
+            }
+        },
+        date: {
+            type: new GraphQLNonNull(GraphQLDateTime)
+        }
+    })
+})
+
 module.exports = {
     TaskType,
     UserType,
     BoardType,
     TaskListType,
-    AuthenticationType
+    AuthenticationType,
+    LogEntryType
 };
