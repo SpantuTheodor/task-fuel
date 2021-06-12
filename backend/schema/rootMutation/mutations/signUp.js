@@ -18,6 +18,9 @@ const signUpMutation = {
         },
         password: {
             type: new GraphQLNonNull(GraphQLString)
+        },
+        email: {
+            type: new GraphQLNonNull(GraphQLString)
         }
     },
     async resolve(parent, args) {
@@ -25,7 +28,8 @@ const signUpMutation = {
 
         const user = new User({
             name: args.name,
-            password: password
+            password: password,
+            email: args.email
         })
 
         const token = jwt.sign({

@@ -9,6 +9,8 @@ const {
 const { GraphQLDateTime } = require('graphql-iso-date')
 const Task = require('../../../models/task.js')
 const TaskList = require('../../../models/taskList.js')
+const LogEntry = require('../../../models/logEntry.js')
+const Board = require('../../../models/board.js')
 const { TaskType } = require('../../objectTypes.js')
 
 const addTaskMutation = {
@@ -68,6 +70,23 @@ const addTaskMutation = {
         await TaskList.updateOne({
             '_id': task.taskListId
         }, { $push: {taskIds: task.id }}, { upsert: true })
+
+        TaskList.findById(args.taskListId).select("boardId").then(async (res) => {
+            
+            let logEntry = new LogEntry({
+                method: "created",
+                boardId: res.boardId,
+                taskName: task.name,
+                date: new Date()
+            })
+
+            logEntry.save()
+
+            await Board.updateOne({
+                '_id': res.boardId
+            }, { $push: {logEntryIds: logEntry.id }}, { upsert: true })
+
+        });
 
         return task.save()
     }

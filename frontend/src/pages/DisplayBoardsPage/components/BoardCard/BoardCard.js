@@ -13,7 +13,8 @@ class BoardCard extends Component {
         this.state = {
             boardId: this.props.boardId,
             name: this.props.name,
-            ownerName: this.props.owner.name
+            ownerName: this.props.owner.name,
+            error: null
         }
         this.deleteBoard = this.deleteBoard.bind(this)
     }
@@ -30,10 +31,17 @@ class BoardCard extends Component {
         }).then((res) => {
             console.log(res)
             this.props.deleteBoardCard(this.state.boardId)
+        }).catch((err) => {
+            this.setState({error: err})
         })
     }
 
     render() { 
+        
+        if (this.state.error) {
+            throw this.state.error;
+        }
+
         return (
             <div className="board-card">
                 <img src={xSymbol} onClick={this.deleteBoard} alt="delete board button" />

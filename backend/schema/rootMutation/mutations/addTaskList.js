@@ -27,7 +27,12 @@ const addTaskListMutation = {
         }
 
     },
-    async resolve(parent, args) {
+    async resolve(parent, args, req) {
+
+        if(!req.isAuthenticated){
+            throw new Error('Unauthenticated')
+        }
+        
         let taskList = new TaskList({
             name: args.name,
             boardId: args.boardId,

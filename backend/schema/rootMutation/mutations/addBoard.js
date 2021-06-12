@@ -34,7 +34,11 @@ const addBoardMutation = {
         }
 
     },
-    async resolve(parent, args) {
+    async resolve(parent, args, req) {
+
+        if(!req.isAuthenticated){
+            throw new Error('Unauthenticated')
+        }
 
         let newUserIds = [...new Set([args.ownerId].concat(args.userIds))]
         let board = new Board({

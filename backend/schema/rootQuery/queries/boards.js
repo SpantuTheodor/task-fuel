@@ -8,7 +8,12 @@ const { BoardType } = require('../../objectTypes.js');
 
 const boardsQuery = {
     type: new GraphQLList(BoardType),
-    resolve(parent, args) {
+    resolve(parent, args, req) {
+        
+        if(!req.isAuthenticated){
+            throw new Error('Unauthenticated')
+        }
+
         return Board.find({});
     }
 }

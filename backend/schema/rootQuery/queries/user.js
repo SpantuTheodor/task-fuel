@@ -11,7 +11,12 @@ const userQuery = {
             type: GraphQLID
         }
     },
-    resolve(parent, args) {
+    resolve(parent, args, req) {
+
+        if(!req.isAuthenticated){
+            throw new Error('Unauthenticated')
+        }
+        
         return User.findById(args.id);
     }
 }

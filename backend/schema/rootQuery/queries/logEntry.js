@@ -11,7 +11,12 @@ const logEntryQuery = {
             type: GraphQLID
         }
     },
-    resolve(parent, args) {
+    resolve(parent, args, req) {
+        
+        if(!req.isAuthenticated){
+            throw new Error('Unauthenticated')
+        }
+        
         return LogEntry.findById(args.id);
     }
 }

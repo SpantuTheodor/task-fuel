@@ -25,7 +25,8 @@ class Menu extends Component {
         super(props);
         this.modalRef = React.createRef();
         this.state = {
-            modalIsOpen: false
+            modalIsOpen: false,
+            error: null
         }
         this.openModal = this.openModal.bind(this)
         this.closeModal = this.closeModal.bind(this)
@@ -53,10 +54,17 @@ class Menu extends Component {
         }).then((res) => {
             this.closeModal()
             return res.data ? this.props.createBoardCard(res.data.createBoard) : null
+        }).catch((err) => {
+            this.setState({error: err})
         })
     }
 
     render() { 
+
+        if (this.state.error) {
+            throw this.state.error;
+        }
+        
         return (
             <div id="menu-container">
                 <h1> Menu </h1>

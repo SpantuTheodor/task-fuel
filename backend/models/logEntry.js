@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 let logEntrySchema = new mongoose.Schema({
     method: String,
     boardId: String,
-    taskId: String,
+    taskName: String,
     date: Date
 });
 

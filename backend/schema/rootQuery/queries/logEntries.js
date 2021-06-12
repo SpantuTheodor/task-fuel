@@ -8,7 +8,12 @@ const { LogEntryType } = require('../../objectTypes.js');
 
 const logEntriesQuery = {
     type: new GraphQLList(LogEntryType),
-    resolve(parent, args) {
+    resolve(parent, args, req) {
+        
+        if(!req.isAuthenticated){
+            throw new Error('Unauthenticated')
+        }
+
         return LogEntry.find({});
     }
 }

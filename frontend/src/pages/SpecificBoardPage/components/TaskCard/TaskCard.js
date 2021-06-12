@@ -22,7 +22,8 @@ class TaskCard extends Component {
             taskId: this.props.taskId,
             boardId: this.props.boardId,
             name: this.props.name,
-            status: this.props.status
+            status: this.props.status,
+            error: null
         }
         this.changeVisibility = this.changeVisibility.bind(this)
         this.deleteTask = this.deleteTask.bind(this)
@@ -54,6 +55,8 @@ class TaskCard extends Component {
         }).then((res) => {
             this.props.deleteTaskFromBoard(this.state.taskListId, this.state.taskId)
             this.props.changePassepartoutVisibility()
+        }).catch((err) => {
+            this.setState({error: err})
         })
     }
 
@@ -66,17 +69,24 @@ class TaskCard extends Component {
             variables: {
                 id: this.state.taskId,
                 boardId: this.state.boardId,
-                taskId: this.state.taskId,
+                name: this.state.name,
                 status: status,
                 date: new Date()
             }
         }).then((res) => {
             this.setState({status: status})
             this.changeVisibility(event)
+        }).catch((err) => {
+            this.setState({error: err})
         })
     }
 
     render() { 
+
+        if (this.state.error) {
+            throw this.state.error;
+        }
+
         return (
             <div className="task-card" ref={this.taskCardRef}>
                     

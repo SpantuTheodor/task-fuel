@@ -14,7 +14,12 @@ const boardsByUserIdQuery = {
             type: GraphQLID
         }
     },
-    resolve(parent, args) {
+    resolve(parent, args, req) {
+
+        if(!req.isAuthenticated){
+            throw new Error('Unauthenticated')
+        }
+        
         return Board.find({$or: [ {'ownerId': args.id}, {'userIds': args.id} ] });            
     }
 }

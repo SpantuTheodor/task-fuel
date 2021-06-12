@@ -21,7 +21,8 @@ class TaskList extends Component {
             tasks: this.props.tasks,
             boardObject: this.props.boardObject,
             showInputItem: false,
-            containerHeight: `${120 + this.props.tasks.length*85}px`
+            containerHeight: `${120 + this.props.tasks.length*85}px`,
+            error: null
         }
         this.handleNameChange = this.handleNameChange.bind(this)
         this.handleClickOutside = this.handleClickOutside.bind(this)
@@ -70,10 +71,17 @@ class TaskList extends Component {
             }
         }).then((res) => {
             this.props.deleteTaskListFromBoard(this.state.taskListId)
+        }).catch((err) => {
+            this.setState({error: err})
         })
     }
 
     render() { 
+
+        if (this.state.error) {
+            throw this.state.error;
+        }
+
         return ( 
             <div className="tasks-list-container" style={{height: this.state.containerHeight}}>
                 

@@ -1,3 +1,4 @@
+const nodemailer = require("nodemailer")
 const graphql = require("graphql")
 const {
     GraphQLString,
@@ -12,6 +13,7 @@ const _ = require('lodash');
 const Task = require('../../../models/task.js')
 const LogEntry = require('../../../models/logEntry.js')
 const Board = require('../../../models/board.js')
+const User = require('../../../models/user.js')
 
 const { TaskType } = require('../../objectTypes.js');
 
@@ -22,9 +24,6 @@ const updateTaskMutation = {
             type: new GraphQLNonNull(GraphQLID)
         },
         boardId: {
-            type: new GraphQLNonNull(GraphQLID)
-        },
-        taskId: {
             type: new GraphQLNonNull(GraphQLID)
         },
         name: {
@@ -66,7 +65,7 @@ const updateTaskMutation = {
             let logEntry = new LogEntry({
                 method: args.status,
                 boardId: args.boardId,
-                taskId: args.id,
+                taskName: args.name,
                 date: new Date()
             })
 
@@ -77,7 +76,7 @@ const updateTaskMutation = {
             }, { $push: {logEntryIds: logEntry.id }}, { upsert: true })
         }
 
-        await Task.updateOne({
+        await Task.findOneAndUpdate({
             '_id': args.id
         }, {$set:
             _.pickBy({
@@ -91,8 +90,38 @@ const updateTaskMutation = {
                 status: args.status,
                 resource: args.resource
             }, _.identity),
-        }, { upsert: true })
+        }, {useFindAndModify: false, new:true, select: "assigneeId"}).then((taskRes) => {
+    
+            if(args.status === "done"){
+                User.findById(taskRes.assigneeId).select("name email").then(async (res) => {
 
+                    let transporter = nodemailer.createTransport({
+                        service: 'gmail',
+                        auth: {
+                            user: process.env.GMAIL_ADD, 
+                            pass: process.env.GMAIL_PWD
+                        }
+                    });
+
+                    let mailOptions = {
+                        from: process.env.GMAIL_ADD, 
+                        to: String(res.email),
+                        subject: `${args.name} finished | task-fuel`,
+                        html: `<p> Hello there, <span style='font-weight:bold;'> ${res.name} </span> </p>
+                        <p>You and your team have successfully completed <span style='font-weight:bold;'>${args.name}</span>, congrats! 😁</p>
+                        <br>
+                        <p> Have a great day, </p>
+                        <p style='font-weight:bold;'>task-fuel</p>`
+                    };
+
+                    transporter.sendMail(mailOptions, (err, data) => {
+                        if (err) {
+                            console.log('Error while sending email');
+                        }
+                    });
+                })
+            }
+        })
     }
 }
 

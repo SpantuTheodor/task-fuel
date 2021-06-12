@@ -6,10 +6,7 @@ const getBoardByIdQuery = gql`
             logEntries {
                 id
                 method
-                task {
-                    id
-                    name
-                }
+                taskName
                 date
             }
         }

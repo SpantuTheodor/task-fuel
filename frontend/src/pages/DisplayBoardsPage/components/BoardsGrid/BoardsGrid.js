@@ -18,7 +18,8 @@ class BoardsGrid extends Component {
             userId: null,
             username: null,
             boards: [],
-            boardCardIdToDelete: this.props.boardCardIdToDelete
+            boardCardIdToDelete: this.props.boardCardIdToDelete,
+            error: null
         }
         this.getUserIdByUsername = this.getUserIdByUsername.bind(this)
         this.displayBoardsByUserId = this.displayBoardsByUserId.bind(this)
@@ -63,6 +64,8 @@ class BoardsGrid extends Component {
             this.setState({userId: res.data.userByUsername.id, username: this.props.username})
         }).then(() => {
             this.displayBoardsByUserId()
+        }).catch((err) => {
+            this.setState({error: err})
         })
     }
 
@@ -85,10 +88,21 @@ class BoardsGrid extends Component {
                 })
             })
             this.setState({boards: [...this.state.boards].concat(newBoards) })
+        }).catch((err) => {
+            this.setState({error: err})
         })
     }
-    
+
+    shouldComponentUpdate(nextProps, nextState){
+        return this.state.error === null
+    }
+
     render(){
+                
+        if (this.state.error) {
+            throw this.state.error;
+        }
+
         return (
             <div id="display-boards-container">
 
@@ -109,7 +123,7 @@ class BoardsGrid extends Component {
                 <p> No boards to display </p>
 
             </div>
-        )
+        )        
     }
 }
 

@@ -25,8 +25,12 @@ const createBoardMutation = {
         }
 
     },
-    async resolve(parent, args) {
+    async resolve(parent, args, req) {
 
+        if(!req.isAuthenticated){
+            throw new Error('Unauthenticated')
+        }
+        
         let board = new Board({
             name: args.name,
             ownerId: args.ownerId,

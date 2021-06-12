@@ -36,6 +36,7 @@ class AddTask extends Component {
             modalIsOpen: false,
             boardObject: this.props.boardObject,
             taskListId: this.props.taskListId,
+            error: null
         }
         this.openModal = this.openModal.bind(this)
         this.closeModal = this.closeModal.bind(this)
@@ -89,10 +90,17 @@ class AddTask extends Component {
                 }
             })
             
+        }).catch((err) => {
+            this.setState({error: err})
         })
     }
 
     render(){
+        
+        if (this.state.error) {
+            throw this.state.error;
+        }
+
         return (
             <div>
                 <div className="add-task-button" onClick={this.openModal}>

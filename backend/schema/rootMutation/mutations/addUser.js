@@ -24,13 +24,22 @@ const addUserMutation = {
         },
         boardIds: {
             type: new GraphQLList(GraphQLID)
+        },
+        email: {
+            type: new GraphQLNonNull(GraphQLString)
         }
     },
-    resolve(parent, args) {
+    resolve(parent, args, req) {
+        
+        if(!req.isAuthenticated){
+            throw new Error('Unauthenticated')
+        }
+
         let user = new User({
             name: args.name,
             password: args.password,
-            boardIds: args.boardIds
+            boardIds: args.boardIds,
+            email: args.email
         });
         return user.save();
     }

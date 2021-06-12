@@ -17,8 +17,12 @@ const deleteBoardMutation = {
             type: new GraphQLNonNull(GraphQLID)
         }
     },
-    async resolve(parent, args) {
+    async resolve(parent, args, req) {
 
+        if(!req.isAuthenticated){
+            throw new Error('Unauthenticated')
+        }
+        
         Board.deleteOne({ '_id': args.id }).then(function(){
             return true
         }).catch(function(error){

@@ -10,7 +10,8 @@ class Log extends Component {
         super(props);
         this.state = {
             boardId: this.props.boardId,
-            logEntries: null
+            logEntries: null,
+            error: null
         }
         this.sub = null
     }
@@ -21,7 +22,6 @@ class Log extends Component {
     }
 
     getLogEntriesByBoardId(){
-        console.log(this.state.boardId)
         this.sub = this.props.client.watchQuery({
             query: getLogEntriesByBoardIdQuery,
             variables: {
@@ -31,7 +31,10 @@ class Log extends Component {
             pollInterval: 10000
         }).subscribe({
             next: ({ data }) => { this.setState({logEntries: data.board.logEntries}) },
-            error: (e) => console.error(e)
+            error: (err) => {
+                this.sub.unsubscribe()
+                this.setState({error: err})
+            }
         })
     }
 
@@ -40,12 +43,17 @@ class Log extends Component {
     }
 
     render() { 
+
+        if (this.state.error) {
+            throw this.state.error;
+        }
+
         return (
             <div>
                 <h1> Log </h1>
                 {this.state.logEntries ? Array.from(this.state.logEntries).reverse().slice(0, 10).map((logEntry) => {
                     return(
-                        <p className="log-entry-p" key={logEntry.id}> {logEntry.task.name} <span className="log-entry-span">{logEntry.method}</span> {logEntry.date.slice(0, 19).replace(/-/g, "/").replace("T", " - ")} </p>
+                        <p className="log-entry-p" key={logEntry.id}> {logEntry.taskName} <span className="log-entry-span">{logEntry.method}</span> {logEntry.date.slice(0, 19).replace(/-/g, "/").replace("T", " - ")} </p>
                     )
                 }) : <p> There is nothing to display at the moment</p>}
             </div>

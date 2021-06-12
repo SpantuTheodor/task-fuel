@@ -6,7 +6,12 @@ const { TaskType } = require('../../objectTypes.js');
 
 const tasksQuery = {
     type: new GraphQLList(TaskType),
-    resolve(parent, args) {
+    resolve(parent, args, req) {
+
+        if(!req.isAuthenticated){
+            throw new Error('Unauthenticated')
+        }
+        
         return Task.find({});
     }
 }

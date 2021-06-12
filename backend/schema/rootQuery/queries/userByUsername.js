@@ -11,7 +11,12 @@ const userByUsernameQuery = {
             type: GraphQLString
         }
     },
-    resolve(parent, args) {
+    resolve(parent, args, req) {
+        
+        if(!req.isAuthenticated){
+            throw new Error('Unauthenticated')
+        }
+
         return User.findOne({'name': args.name});
     }
 }

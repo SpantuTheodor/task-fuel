@@ -17,7 +17,11 @@ const deleteTaskListMutation = {
             type: new GraphQLNonNull(GraphQLID)
         }
     },
-    async resolve(parent, args) {
+    async resolve(parent, args, req) {
+
+        if(!req.isAuthenticated){
+            throw new Error('Unauthenticated')
+        }
 
         TaskList.deleteOne({ '_id': args.id }).then(function(){
             return true

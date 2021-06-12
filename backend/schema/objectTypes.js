@@ -92,6 +92,9 @@ const UserType = new GraphQLObjectType({
                     }
                 })
             }
+        },
+        email: {
+            type: GraphQLString
         }
     })
 })
@@ -206,11 +209,8 @@ const LogEntryType = new GraphQLObjectType({
                 return Board.findById(parent.boardId);
             }
         },
-        task: {
-            type: TaskType,
-            resolve(parent, args){
-                return Task.findById(parent.taskId);
-            }
+        taskName: {
+            type: new GraphQLNonNull(GraphQLString)
         },
         date: {
             type: new GraphQLNonNull(GraphQLDateTime)
