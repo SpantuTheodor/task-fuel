@@ -36,16 +36,18 @@ class LoginForm extends Component {
 
     render(){
         return (
-            <div id="login-div">
-                <h1 id="login-h"> Welcome back! </h1>
-                <p> To connect with us complete the form with your personal information. </p>
-                { this.state.redirect ? (<Redirect push to={`/${this.state.name}/boards`}/>) : null }
-                <form id="login-form" onSubmit={ this.submitForm.bind(this) }>
-                        <input className="login-input-items login-form-items" type="text" placeholder="Username" onChange = { (event) => this.setState({name: event.target.value}) } />
-                        <input className="login-input-items login-form-items" type="password" placeholder="Password" onChange = { (event) => this.setState({password: event.target.value}) } /> 
-                        <input id="login-submit-button" className="login-form-items" type="submit" value="Log In" />
-                </form>
-                <Link to="/register" id="login-forgot-pwd">Don't have an account?</Link>
+            <div id="login-form-container">
+                <div id="login-div">
+                    <h1 id="login-h"> Welcome back! </h1>
+                    <p id="login-p"> To connect with us complete the form with your personal information. </p>
+                    { this.state.redirect ? (<Redirect push to={`/${this.state.name}/boards`}/>) : null }
+                    <form id="login-form" onSubmit={ this.submitForm.bind(this) }>
+                            <input className="login-input-items login-form-items" type="text" placeholder="Username" onChange = { (event) => this.setState({name: event.target.value}) } />
+                            <input className="login-input-items login-form-items" type="password" placeholder="Password" onChange = { (event) => this.setState({password: event.target.value}) } /> 
+                            <input id="login-submit-button" className="login-form-items" type="submit" value="Log In" />
+                    </form>
+                    <Link to="/register" id="login-dont-have-acc">Don't have an account?</Link>
+                </div>
             </div>
         );
     }

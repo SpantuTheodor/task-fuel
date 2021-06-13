@@ -15,6 +15,7 @@ class FallbackPage extends Component {
     render() { 
         return ( 
             <div>
+                <Navbar />
                 <h1 className="fallback-message"> {this.state.message} </h1>
             </div>
         );

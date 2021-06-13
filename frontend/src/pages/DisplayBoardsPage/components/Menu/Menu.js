@@ -4,26 +4,13 @@ import AuthenticationContext from "../../../../contexts/authenticationContext"
 import createBoardMutation from "../../../../mutations/createBoardMutation"
 
 import React, { Component } from 'react';
-import ReactModal from 'react-modal';
 import { withApollo } from "react-apollo";
-
-const customStyles = {
-    content : {
-        top                   : '50%',
-        left                  : '50%',
-        right                 : 'auto',
-        bottom                : 'auto',
-        marginRight           : '-50%',
-        transform             : 'translate(-50%, -50%)'
-    }
-};
-
-ReactModal.setAppElement('#root')
 
 class Menu extends Component {
     constructor(props) {
         super(props);
         this.modalRef = React.createRef();
+        this.modalInputRef = React.createRef();
         this.state = {
             modalIsOpen: false,
             error: null
@@ -31,16 +18,25 @@ class Menu extends Component {
         this.openModal = this.openModal.bind(this)
         this.closeModal = this.closeModal.bind(this)
         this.createBoard = this.createBoard.bind(this)
+        this.handleClickOutside = this.handleClickOutside.bind(this)
     }
 
     static contextType = AuthenticationContext
 
     openModal(){
         this.setState({modalIsOpen: true})
+        document.addEventListener('mousedown', this.handleClickOutside);
     }
 
     closeModal(){
         this.setState({modalIsOpen: false})
+        document.removeEventListener('mousedown', this.handleClickOutside);
+    }
+
+    handleClickOutside(event) {
+        if (this.modalRef && !this.modalRef.current.contains(event.target)) {
+            this.closeModal()
+        }
     }
 
     createBoard(event){
@@ -48,10 +44,11 @@ class Menu extends Component {
         this.props.client.mutate({
             mutation: createBoardMutation,
             variables: {
-                name: this.modalRef.current.value,
+                name: this.modalInputRef.current.value,
                 ownerId: this.context.userId
             }
         }).then((res) => {
+            this.modalInputRef.current.value=""
             this.closeModal()
             return res.data ? this.props.createBoardCard(res.data.createBoard) : null
         }).catch((err) => {
@@ -70,20 +67,13 @@ class Menu extends Component {
                 <h1> Menu </h1>
                 
                 <p className="menu-items" onClick={this.openModal}>Add Board</p>
-
-                    <ReactModal
-                    isOpen={this.state.modalIsOpen}
-                    onRequestClose={this.closeModal}
-                    style={customStyles}
-                    contentLabel="Create Board"
-                    >
-
+                <div className={"add-board-passepartout" + (this.state.modalIsOpen ? "" : " hidden")}> </div>
+                <div className={"add-board-modal" + (this.state.modalIsOpen ? "" : " hidden")} ref={this.modalRef}>  {/*isOpen={this.state.modalIsOpen} onRequestClose={this.closeModal} */}
                     <form>
-                        <input placeholder="Board name" ref={this.modalRef}/>
+                        <input placeholder="Board name" ref={this.modalInputRef}/>
                         <button onClick={this.createBoard}>Create board</button>                       
                     </form>
-                </ReactModal>
-
+                </div>
             </div>
         );
     }

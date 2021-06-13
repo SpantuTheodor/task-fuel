@@ -6,9 +6,9 @@
     top:0;
     left:0;
     z-index: 100;
-    max-width: 100%;
-    min-width: 100vw;
     position: fixed;
+    -webkit-transform: none !important;
+    transform: none !important;
 }
 
 #logo{
@@ -52,3 +52,4 @@
         margin-left: 20px;
     }
 }
+

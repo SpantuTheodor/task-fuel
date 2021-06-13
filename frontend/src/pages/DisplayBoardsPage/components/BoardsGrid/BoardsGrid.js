@@ -120,7 +120,7 @@ class BoardsGrid extends Component {
                     </div>
                         
                 <h1> Owned Boards </h1>
-                <p> No boards to display </p>
+                <div className="owned-board-cards-container"> No boards to display </div>
 
             </div>
         )        

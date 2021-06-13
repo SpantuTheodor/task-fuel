@@ -1,9 +1,9 @@
 #menu-container{
     margin-top:90px;
     padding-left:4%;
-    width:16%;
+    width:200px;
     display: inline-block;
-    vertical-align:top
+    vertical-align:top;
 }
 
 .menu-items{
@@ -14,4 +14,63 @@
 
 .menu-items:hover{
     color: #000000;
+}
+
+.add-board-modal {
+    position:fixed !important;
+    top:50vh;
+    left:50vw;
+    z-index: 200;
+    background-color: #ffffff;
+    width:320px;
+    border-radius: 10px;
+    -webkit-transform: none !important;
+    transform: none !important;
+    transform: translate(-50%, -50%) !important;
+}
+
+.add-board-modal form{
+    padding:20px 0px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: 5px
+}
+
+.add-board-passepartout {
+    position:fixed;
+    top:0;
+    left:0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000000;
+    opacity: 40%;
+    z-index:50;
+    -webkit-transform: none !important;
+    transform: none !important;
+}
+
+
+@media only screen and (max-width: 1320px) {
+    #menu-container{
+        padding: 0;
+        margin-top:90px;
+        width:200px;
+        display: flex;
+        flex-direction: column;
+        vertical-align:top;
+        text-align: center;
+    }
+}
+
+@media only screen and (max-width: 770px) {
+    #menu-container{
+        padding: 0;
+        margin-top:90px;
+        width:200px;
+        display: flex;
+        flex-direction: column;
+        vertical-align:top;
+        text-align: center;
+    }
 }

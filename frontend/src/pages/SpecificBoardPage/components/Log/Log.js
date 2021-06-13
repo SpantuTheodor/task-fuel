@@ -50,7 +50,7 @@ class Log extends Component {
 
         return (
             <div>
-                <h1> Log </h1>
+                <h1 className="log-header"> Log </h1>
                 {this.state.logEntries ? Array.from(this.state.logEntries).reverse().slice(0, 10).map((logEntry) => {
                     return(
                         <p className="log-entry-p" key={logEntry.id}> {logEntry.taskName} <span className="log-entry-span">{logEntry.method}</span> {logEntry.date.slice(0, 19).replace(/-/g, "/").replace("T", " - ")} </p>

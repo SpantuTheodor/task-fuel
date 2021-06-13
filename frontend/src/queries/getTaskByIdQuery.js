@@ -16,6 +16,9 @@ const getTaskByIdQuery = gql`
             }
             startDate
             endDate
+            status
+            location
+            resource
         }
     }
 `

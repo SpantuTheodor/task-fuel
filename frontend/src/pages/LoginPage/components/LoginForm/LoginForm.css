@@ -1,21 +1,33 @@
+#login-form-container{
+    width:59%;
+    text-align: center;
+    display: inline-block;
+    margin:0;
+    margin-bottom: 30px;
+    position: relative;
+    text-align: center;
+}
+
 .login-form-items{
     margin:auto;
 }
 
 #login-div{
-    display: inline-block;
     background-color: #fff;
-    width:700px;
-    height:500px;
-    margin-left:10vw;
-    margin-top: 160px;
+    width:60%;
+    margin-top: 150px;
     border-radius: 20px;
     box-shadow: 0px 5px 10px #bebebe,
                 0px -5px 10px #ffffff;
+    display: inline-block;
     text-align: center;
-
+    height:500px;
 }
 
+#login-p{
+    margin:auto;
+    width: 50%;
+}
 #login-h{
     padding-top:40px;
 }
@@ -24,25 +36,21 @@
     display: block;
     padding: 10px 0;
     font-size: 16px;
-    margin-bottom: 30px;
     border: none;
     border-bottom: 1px solid rgb(0, 0, 0);
     outline: none;
     background: transparent;
-    width:400px;
+    width:70%;
+    margin-top: 20px;
 }
 
 .login-input-items:nth-of-type(1){
     margin-top:30px;
 }
 
-#login-forgot-pwd{
-    margin:40px 0;
-}
-
 #login-submit-button{
-    margin-top:20px;
-    background-color: #007acc;
+    margin-top:40px;
+    background-color:#007acc;
     border-radius:10px;
     width:200px;
     height: 60px;
@@ -51,7 +59,41 @@
     color:#fff
 }
 
-#login-forgot-pwd{
-    display: block;
-    margin:65px auto;
+#login-dont-have-acc{
+    display: inline-block;
+    position:absolute;
+    bottom: 20px;
+    transform: translate(-50%, 0);
+    margin: auto;
+}
+
+.login-error{
+    color: red;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+@media only screen and (max-width: 1200px) {
+    #login-form-container{
+        width:100%;
+    }
+
+    #login-div{
+        display: inline-block;
+        height: 500px;
+        margin-top:120px;
+    }
+}
+
+@media only screen and (max-width: 650px) {
+    #login-div{
+        width:90%;
+        height: 520px;
+    }
+}
+
+@media only screen and (max-height: 800px) {
+    #login-div{
+        margin-top:100px;
+    }
 }

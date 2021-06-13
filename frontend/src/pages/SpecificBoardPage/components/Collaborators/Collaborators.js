@@ -22,7 +22,7 @@ class Collaborators extends Component {
         return (
             <div>
                 <h1> Collaborators </h1>
-        
+                <p> Add collaborators </p> 
                 {
                     this.state.boardObject === null ? <p className="collaborators-items"> No collaborators to display </p> : this.state.boardObject.users.map(user => {
                         return(

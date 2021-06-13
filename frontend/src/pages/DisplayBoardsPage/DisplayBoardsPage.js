@@ -1,7 +1,9 @@
+import "./DisplayBoardsPage.css";
+
 import NavBar from '../../shared/components/Navbar/Navbar'
 import BoardsGrid from './components/BoardsGrid/BoardsGrid'
 import Menu from './components/Menu/Menu'
-import ErrorBoundary from '../../shared/components/ErrorBoundary'
+import ErrorBoundary from '../../shared/components/ErrorBoundary/ErrorBoundary'
 
 import React, { Component } from 'react';
 
@@ -31,7 +33,7 @@ class DisplayBoardsPage extends Component {
 
     render() { 
         return (
-            <div>
+            <div className="display-boards-page-container">
                 <ErrorBoundary>
                     <NavBar />
                     <Menu createBoardCard={this.createBoardCard}/>

@@ -3,7 +3,7 @@ import Collaborators from './components/Collaborators/Collaborators'
 import TasksGrid from './components/TasksGrid/TasksGrid'
 import getBoardByIdQuery from '../../queries/getBoardByIdQuery'
 import Log from './components/Log/Log'
-import ErrorBoundary from '../../shared/components/ErrorBoundary'
+import ErrorBoundary from '../../shared/components/ErrorBoundary/ErrorBoundary'
 
 import React, { Component } from 'react';
 import { withApollo } from "react-apollo";

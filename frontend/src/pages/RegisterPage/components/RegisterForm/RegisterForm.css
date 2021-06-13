@@ -3,6 +3,9 @@
     text-align: center;
     display: inline-block;
     margin:0;
+    margin-bottom: 30px;
+    position: relative;
+    text-align: center;
 }
 
 .register-form-items{
@@ -11,7 +14,7 @@
 
 #register-div{
     background-color: #fff;
-    width:65%;
+    width:60%;
     margin-top: 150px;
     border-radius: 20px;
     box-shadow: 0px 5px 10px #bebebe,
@@ -57,9 +60,11 @@
 }
 
 #register-already-have-acc{
-    display: block;
-    position:relative;
-    top: 50px;
+    display: inline-block;
+    position:absolute;
+    bottom: 20px;
+    transform: translate(-50%, 0);
+    margin: auto;
 }
 
 .register-error{

@@ -1,4 +1,4 @@
-import FallbackPage from "../../pages/FallbackPage/FallbackPage";
+import FallbackPage from "../../../pages/FallbackPage/FallbackPage";
 
 import React, { Component } from "react"
 import { Redirect } from "react-router";
