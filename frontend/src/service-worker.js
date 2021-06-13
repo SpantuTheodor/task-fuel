@@ -96,17 +96,16 @@ self.addEventListener('fetch', async (event) => {
   let graphQLRegularExpression = new RegExp('graphql')
   if (event.request.method === 'POST' && graphQLRegularExpression.test(event.request.url)) {
     try{
-      await event.respondWith(staleWhileRevalidate(event))
+      await event.respondWith(getResponseByQueryType(event))
     }catch(err){
       console.log("error: ", err)
     }
   }
 })
 
-async function staleWhileRevalidate(event) {
+async function getResponseByQueryType(event) {
 
   let body = await event.request.clone().json()
-  console.log(body)
   if(body.query.startsWith("query")){
     let cachedResponse = await getCache(event.request.clone());
     let fetchPromise = fetch(event.request.clone())
@@ -116,34 +115,29 @@ async function staleWhileRevalidate(event) {
       })
       .catch((err) => {
         console.error(err);
+        return cachedResponse
       });
     console.log(1)
-    return cachedResponse ? Promise.resolve(cachedResponse) : fetchPromise
+    return fetchPromise
   
   
   } else if(body.query.startsWith("mutation")){
     if (!navigator.onLine) {
 
-      return serialize(event.request).then(async (serialized) => {
+      return serializeForMutation(event.request).then(async (serialized) => {
   
         let queue = (await idbGet("queue", mutationStore)) || []
 
-        console.log("DATA BP", queue)
         queue.push(serialized)
-        console.log("DATA AP", queue)
         console.log(`Setting response to cache.`);
 
         idbSet('queue', queue, mutationStore);
 
-        console.log(queue)
         console.log(2)
 
         return new Response(
           JSON.stringify([{
-            text: 'You are offline and I know it well.',
-            author: 'The Service Worker Cookbook',
-            id: 1,
-            isSticky: true
+            text: 'You are offline'
           }]),
           { headers: { 'Content-Type': 'application/json' } }
         )
@@ -158,7 +152,7 @@ async function staleWhileRevalidate(event) {
 
 }
 
-async function serializeResponse(response) {
+async function serializeForQuery(response) {
   let serializedHeaders = {};
   for (var entry of response.headers.entries()) {
     serializedHeaders[entry[0]] = entry[1];
@@ -174,7 +168,6 @@ async function serializeResponse(response) {
 
 async function setCache(request, response) {
   let body = await request.json();
-  console.log("Body ", body)
 
   if(body.query.startsWith("query")){
 
@@ -189,7 +182,7 @@ async function setCache(request, response) {
 
     var entry = {
       query: body.query,
-      response: await serializeResponse(response),
+      response: await serializeForQuery(response),
       timestamp: Date.now()
     };
     idbSet(id, entry, store);
@@ -230,7 +223,7 @@ async function getCache(request) {
   
 }
 
-async function serialize(request) {
+async function serializeForMutation(request) {
   var headers = {};
 
   let data = await request.json()
@@ -249,7 +242,6 @@ async function serialize(request) {
     redirect: request.redirect,
     referrer: request.referrer
   };
-console.log("REQUEST", request)
 
   return Promise.resolve(serialized);
 }
@@ -277,15 +269,14 @@ async function flushQueue() {
       var sending = requests.reduce((prevPromise, serialized) => {
         console.log('Sending', serialized.method, serialized.url);
         return prevPromise.then(() => {
-          return deserialize(serialized).then((request) =>{
+          return deserializeForMutation(serialized).then((request) =>{
             return fetch(request);
           });
         });
       }, Promise.resolve());
-      console.log("SENDING", sending)
       return sending;
     }
 
-    function deserialize(data) {
+    function deserializeForMutation(data) {
       return Promise.resolve(new Request(data.url, data));
     }

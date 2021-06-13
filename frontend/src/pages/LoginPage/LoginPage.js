@@ -15,7 +15,6 @@ class LoginPage extends Component {
     render() { 
         return (
             <div>
-                <NavBar />
                 <LoginImage />
                 <LoginForm />
             </div>
