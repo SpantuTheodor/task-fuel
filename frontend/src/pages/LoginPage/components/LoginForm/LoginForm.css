@@ -59,6 +59,11 @@
     color:#fff
 }
 
+#login-submit-button:hover{
+    cursor: pointer;
+    transform:scale(97%)
+}
+
 #login-dont-have-acc{
     display: inline-block;
     position:absolute;

@@ -59,6 +59,11 @@
     color:#fff
 }
 
+#register-submit-button:hover{
+    cursor: pointer;
+    transform:scale(97%)
+}
+
 #register-already-have-acc{
     display: inline-block;
     position:absolute;

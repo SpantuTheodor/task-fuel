@@ -49,7 +49,7 @@ class Log extends Component {
         }
 
         return (
-            <div>
+            <div className="log-container">
                 <h1 className="log-header"> Log </h1>
                 {this.state.logEntries ? Array.from(this.state.logEntries).reverse().slice(0, 10).map((logEntry) => {
                     return(

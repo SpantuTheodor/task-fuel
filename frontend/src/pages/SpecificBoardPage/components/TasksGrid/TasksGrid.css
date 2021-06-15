@@ -1,7 +1,7 @@
 #display-tasks-container{
     margin-top:90px;
     padding-bottom: 40px;
-    width:80%;
+    width:1px;
     display: inline-block;
     vertical-align:top;
 }
@@ -16,4 +16,11 @@
     min-width: 40px;
     min-height: 100px;
     display: inline-block;
+}
+
+
+@media only screen and (max-width: 420px) {
+    #display-tasks-container{
+        margin-left: 60px;
+    }
 }

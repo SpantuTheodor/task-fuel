@@ -97,6 +97,7 @@ class App extends Component{
                 <Route exact path="/login" component={LoginPage} />
                 <Route exact path="/register" component={RegisterPage} />
                 <Route exact path="/fallback" component={FallbackPage} />
+                <Route exact path="/:hashed" component={SpecificTaskPage} />
                 <Route path ="/" component={SpecificBoardPage} />
               </Switch>
             </div>

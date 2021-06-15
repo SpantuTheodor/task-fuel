@@ -1,3 +1,5 @@
+import "./SpecificBoardPage.css"
+
 import NavBar from '../../shared/components/Navbar/Navbar'
 import Collaborators from './components/Collaborators/Collaborators'
 import TasksGrid from './components/TasksGrid/TasksGrid'
