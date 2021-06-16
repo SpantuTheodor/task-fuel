@@ -4,7 +4,8 @@ const {
     GraphQLString,
     GraphQLID,
     GraphQLList,
-    GraphQLNonNull
+    GraphQLNonNull,
+    GraphQLInt
 } = graphql
 
 const {
@@ -67,6 +68,9 @@ const TaskType = new GraphQLObjectType({
         }, 
         resource: {
             type: GraphQLString
+        }, 
+        order: {
+            type: GraphQLInt
         }
     }),
 });

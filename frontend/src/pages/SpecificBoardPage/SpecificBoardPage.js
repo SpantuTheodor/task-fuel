@@ -24,6 +24,7 @@ class SpecificBoardPage extends Component {
         this.getBoardById = this.getBoardById.bind(this)
         this.addTaskListToBoard = this.addTaskListToBoard.bind(this)
         this.addTaskToBoard = this.addTaskToBoard.bind(this)
+        this.changeTaskOrderOnBoard = this.changeTaskOrderOnBoard.bind(this)
         this.deleteTaskListFromBoard = this.deleteTaskListFromBoard.bind(this)
         this.deleteTaskFromBoard = this.deleteTaskFromBoard.bind(this)
         this.changePassepartoutVisibility = this.changePassepartoutVisibility.bind(this)
@@ -52,6 +53,14 @@ class SpecificBoardPage extends Component {
         this.setState({boardObject: boardObjectCopy})
     }
 
+    changeTaskOrderOnBoard(taskListObjectId, tasksArray){
+        let boardObjectCopy = JSON.parse(JSON.stringify(this.state.boardObject))
+        
+        let index = boardObjectCopy.taskLists.findIndex(taskList => taskList.id === taskListObjectId)
+        boardObjectCopy.taskLists[index].tasks = tasksArray
+        this.setState({boardObject: boardObjectCopy})
+    }
+
     deleteTaskListFromBoard(taskListObjectId){
         let boardObjectCopy = JSON.parse(JSON.stringify(this.state.boardObject))
         boardObjectCopy.taskLists = boardObjectCopy.taskLists.filter(taskList => taskList.id !== taskListObjectId)
@@ -63,7 +72,6 @@ class SpecificBoardPage extends Component {
         let index = boardObjectCopy.taskLists.findIndex(taskList => taskList.id === taskListObjectId)
         boardObjectCopy.taskLists[index].tasks = boardObjectCopy.taskLists[index].tasks.filter(task => task.id !== taskObjectId)
         this.setState({boardObject: boardObjectCopy})
-
     }
 
     changePassepartoutVisibility(){
@@ -106,6 +114,7 @@ class SpecificBoardPage extends Component {
                         boardObject={this.state.boardObject} 
                         addTaskListToBoard={this.addTaskListToBoard}
                         addTaskToBoard={this.addTaskToBoard}
+                        changeTaskOrderOnBoard={this.changeTaskOrderOnBoard}
                         deleteTaskListFromBoard={this.deleteTaskListFromBoard} 
                         deleteTaskFromBoard={this.deleteTaskFromBoard}
                         changePassepartoutVisibility={this.changePassepartoutVisibility} 

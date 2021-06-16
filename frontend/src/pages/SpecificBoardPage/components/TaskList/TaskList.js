@@ -5,10 +5,13 @@ import AddTask from "../AddTask/AddTask"
 import xSymbol from "../../../../assets/x-icon.png"
 import deleteTaskListMutation from "../../../../mutations/deleteTaskListMutation"
 import AuthenticationContext from "../../../../contexts/authenticationContext"
+import updateTaskListMutation from "../../../../mutations/updateTaskListMutation"
 
 import { Link } from 'react-router-dom';
 import React, { Component } from 'react'
 import { withApollo } from "react-apollo"
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
+import _ from "lodash"
 
 class TaskList extends Component {
     
@@ -27,7 +30,7 @@ class TaskList extends Component {
         this.handleNameChange = this.handleNameChange.bind(this)
         this.handleClickOutside = this.handleClickOutside.bind(this)
         this.deleteTaskList = this.deleteTaskList.bind(this)
-
+        this.handleOnDragEnd = this.handleOnDragEnd.bind(this)
     }
 
     static contextType = AuthenticationContext
@@ -76,6 +79,35 @@ class TaskList extends Component {
         })
     }
 
+    handleOnDragEnd(result){
+        if(!result.destination) return;
+        const items = Array.from(this.state.tasks)
+        const [reorderedItem] = items.splice(result.source.index, 1)
+        items.splice(result.destination.index, 0, reorderedItem)
+        console.log(items)
+        let itemIds = items.map((item) => {
+            return item.id
+        })
+        console.log("TASK", this.state.tasks)
+        console.log("ITEMS", items)
+        console.log(itemIds)
+
+        items.map((item,index) => { 
+            item.order = index
+        })
+        this.props.changeTaskOrderOnBoard(this.state.taskListId, items)
+
+        this.props.client.mutate({
+            mutation: updateTaskListMutation,
+            variables: {
+                id: this.state.taskListId,
+                taskIds: itemIds
+            }
+        }).catch((err) => {
+            this.setState({error: err})
+        })
+    }
+
     render() { 
 
         if (this.state.error) {
@@ -91,26 +123,41 @@ class TaskList extends Component {
                 
                 {this.state && this.state.tasks.length ? 
                     <div className="task-cards-container">
-                        {
-                            this.state.tasks.map(task => {
-                                return(
-                                    <Link key={task.id} to={`/${this.context.username}/board/${this.state.boardObject.id}/task/${task.id}`} className="task-card-anchor">
-                                        <TaskCard 
-                                            key={task.id}
-                                            boardId={this.state.boardObject.id}
-                                            taskListId={this.state.taskListId}
-                                            taskId={task.id}
-                                            name={task.name} 
-                                            description={task.description} 
-                                            assignee={task.assignee}
-                                            status={task.status}
-                                            deleteTaskFromBoard={this.props.deleteTaskFromBoard}
-                                            changePassepartoutVisibility={this.props.changePassepartoutVisibility}
-                                        />
-                                    </Link>
-                                )
-                            })
-                        }
+                        <DragDropContext onDragEnd={this.handleOnDragEnd}>
+                            <Droppable droppableId={"tasks"}>
+                                {(provided) => (
+                                    <ul className="task-cards-ul" {...provided.droppableProps} ref={provided.innerRef}>
+                                    {    
+                                        _.sortBy(this.state.tasks, "order").map((task, index) => {
+                                            return(
+                                                <Draggable key={task.id} draggableId={task.id} index={index}>
+                                                    {(provided) => (
+                                                    <li {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}> 
+                                                        <Link to={`/${this.context.username}/board/${this.state.boardObject.id}/task/${task.id}`} className="task-card-anchor">
+                                                            <TaskCard 
+                                                                key={task.id}
+                                                                boardId={this.state.boardObject.id}
+                                                                taskListId={this.state.taskListId}
+                                                                taskId={task.id}
+                                                                name={task.name} 
+                                                                description={task.description} 
+                                                                assignee={task.assignee}
+                                                                status={task.status}
+                                                                deleteTaskFromBoard={this.props.deleteTaskFromBoard}
+                                                                changePassepartoutVisibility={this.props.changePassepartoutVisibility}
+                                                            />
+                                                        </Link>
+                                                    </li>
+                                                    )}
+                                                </Draggable>
+                                            )
+                                        })
+                                    }
+                                    {provided.placeholder}
+                                    </ul>
+                                )}
+                            </Droppable>
+                        </DragDropContext>
                     </div>
                 
                 : null
@@ -120,6 +167,7 @@ class TaskList extends Component {
                     taskListId={this.state.taskListId} 
                     boardObject={this.state.boardObject} 
                     addTaskToBoard={this.props.addTaskToBoard}
+                    taskListNumber={this.props.taskListNumber}
                 />
 
             </div>

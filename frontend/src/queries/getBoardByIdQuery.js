@@ -23,6 +23,7 @@ const getBoardByIdQuery = gql`
                         name
                     }
                     status
+                    order
                 }
             }
         }

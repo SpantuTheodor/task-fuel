@@ -36,6 +36,7 @@ class AddTask extends Component {
             modalIsOpen: false,
             boardObject: this.props.boardObject,
             taskListId: this.props.taskListId,
+            taskListNumber: this.props.taskListNumber,
             error: null
         }
         this.openModal = this.openModal.bind(this)
@@ -77,6 +78,7 @@ class AddTask extends Component {
                 taskListId: String(this.state.taskListId),
                 location: this.state.location,
                 status: "not yet started",
+                order: this.state.boardObject.taskLists[this.state.taskListNumber].tasks.length
             }
         }).then((res) => {
             this.closeModal()

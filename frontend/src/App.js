@@ -28,21 +28,21 @@ const authLink = setContext((_, { headers }) => {
   }
 });
 
+const defaultOptions: DefaultOptions = {
+  watchQuery: {
+    fetchPolicy: 'no-cache',
+    errorPolicy: 'ignore',
+  },
+  query: {
+    fetchPolicy: 'no-cache',
+    errorPolicy: 'all',
+  },
+}
+
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
-  cache: new InMemoryCache({
-    typePolicies: {
-      Query: {
-        fields: {
-          boardsByUserId: {
-            merge(existing, incoming){
-              return incoming
-            }
-          }
-        }
-      }
-    }
-  })
+  cache: new InMemoryCache(),
+  defaultOptions: defaultOptions
 });
 
 class App extends Component{

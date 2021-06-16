@@ -33,15 +33,17 @@ class TasksGrid extends Component {
                 <h1> Tasks </h1>
                 <div className="task-lists-container">
                     {
-                        this.state.boardObject === null ? <p> No tasks to display </p> : this.state.boardObject.taskLists.map(taskList => {
+                        this.state.boardObject === null ? <p> No tasks to display </p> : this.state.boardObject.taskLists.map((taskList, index) => {
                             return(
                                 <TaskList 
                                     key={taskList.id} 
                                     taskListId={taskList.id} 
+                                    taskListNumber={index}
                                     name={taskList.name} 
                                     tasks={taskList.tasks} 
                                     boardObject={this.state.boardObject}
-                                    addTaskToBoard={this.props.addTaskToBoard} 
+                                    addTaskToBoard={this.props.addTaskToBoard}
+                                    changeTaskOrderOnBoard={this.props.changeTaskOrderOnBoard} 
                                     deleteTaskListFromBoard={this.props.deleteTaskListFromBoard}
                                     deleteTaskFromBoard={this.props.deleteTaskFromBoard}
                                     changePassepartoutVisibility={this.props.changePassepartoutVisibility}

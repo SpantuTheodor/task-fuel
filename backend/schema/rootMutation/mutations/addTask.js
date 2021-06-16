@@ -2,6 +2,7 @@ const graphql = require("graphql")
 const {
     GraphQLString,
     GraphQLID,
+    GraphQLInt,
     GraphQLList,
     GraphQLNonNull,
 } = graphql
@@ -45,6 +46,9 @@ const addTaskMutation = {
         },
         resource: {
             type: GraphQLString
+        },
+        order: {
+            type: new GraphQLNonNull(GraphQLInt)
         }
 
     },
@@ -64,7 +68,8 @@ const addTaskMutation = {
             taskListId: args.taskListId,
             location: args.location,
             status: args.status,
-            resource: args.resource
+            resource: args.resource,
+            order: args.order
         })
 
         await TaskList.updateOne({

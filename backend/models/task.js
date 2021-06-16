@@ -10,7 +10,8 @@ let taskSchema = new mongoose.Schema({
     taskListId: String,
     location: String,
     status: String,
-    resource: String
+    resource: String,
+    order: Number
 });
 
 module.exports = mongoose.model('Task', taskSchema);

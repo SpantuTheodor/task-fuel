@@ -1,18 +1,19 @@
-const graphql = require("graphql");
-const { GraphQLObjectType } = graphql;
+const graphql = require("graphql")
+const { GraphQLObjectType } = graphql
 
 const { addTaskMutation } = require('./mutations/addTask')
 const { addUserMutation } = require('./mutations/addUser')
 const { addBoardMutation } = require('./mutations/addBoard')
 const { addTaskListMutation } = require("./mutations/addTaskList")
-const { addUserToBoardMutation } = require("./mutations/addUserToBoard");
+const { addUserToBoardMutation } = require("./mutations/addUserToBoard")
 const { signUpMutation } = require('./mutations/signUp')
 const { logInMutation } = require('./mutations/logIn')
 const { createBoardMutation } = require("./mutations/createBoard")
 const { deleteBoardMutation } = require("./mutations/deleteBoard")
 const { deleteTaskListMutation } = require("./mutations/deleteTaskList")
 const { deleteTaskMutation } = require("./mutations/deleteTask")
-const { updateTaskMutation } = require("./mutations/updateTask");
+const { updateTaskMutation } = require("./mutations/updateTask")
+const { updateTaskListMutation } = require("./mutations/updateTaskList")
 
 const RootMutation = new GraphQLObjectType({
     name: 'RootMutation',
@@ -27,6 +28,7 @@ const RootMutation = new GraphQLObjectType({
         deleteTaskList: deleteTaskListMutation,
         deleteTask: deleteTaskMutation,
         updateTask: updateTaskMutation,
+        updateTaskList: updateTaskListMutation,
         signUp: signUpMutation,
         logIn: logInMutation,
     }

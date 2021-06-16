@@ -13,10 +13,7 @@ const taskListQuery = {
     },
     resolve(parent, args, req) {
 
-        if(!req.isAuthenticated){
-            throw new Error('Unauthenticated')
-        }
-        
+
         return TaskList.findById(args.id);
     }
 }
