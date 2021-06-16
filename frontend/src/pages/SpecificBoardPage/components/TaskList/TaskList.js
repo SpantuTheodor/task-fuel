@@ -35,6 +35,12 @@ class TaskList extends Component {
 
     static contextType = AuthenticationContext
 
+    componentDidMount(){
+        let sortedTasks = _.sortBy(this.props.tasks, "order")
+        if(sortedTasks !== this.state.tasks){
+            this.setState({tasks: sortedTasks})
+        }
+    }
     componentDidUpdate(){
         this.inputRef.current.select();
         if(this.state.showInputItem){
@@ -43,11 +49,20 @@ class TaskList extends Component {
     }
 
     static getDerivedStateFromProps(props, state){
-        if(props.boardObject !== state.boardObject){
-            return {
-                boardObject: props.boardObject,
-                tasks: props.tasks,
-                containerHeight: `${120 + props.tasks.length*85}px`
+        if(props.boardObject !== state.boardObject || props.tasks !== state.tasks){
+            let sortedTasks = _.sortBy(props.tasks, "order")
+            if(sortedTasks !== state.tasks){
+                return {
+                    boardObject: props.boardObject,
+                    tasks: sortedTasks,
+                    containerHeight: `${120 + props.tasks.length*85}px`
+                }
+            } else {
+                return {
+                    boardObject: props.boardObject,
+                    tasks: props.tasks,
+                    containerHeight: `${120 + props.tasks.length*85}px`
+                }
             }
         } 
         return null
@@ -81,6 +96,7 @@ class TaskList extends Component {
 
     handleOnDragEnd(result){
         if(!result.destination) return;
+        console.log("TASK", this.state.tasks)
         const items = Array.from(this.state.tasks)
         const [reorderedItem] = items.splice(result.source.index, 1)
         items.splice(result.destination.index, 0, reorderedItem)
@@ -88,14 +104,12 @@ class TaskList extends Component {
         let itemIds = items.map((item) => {
             return item.id
         })
-        console.log("TASK", this.state.tasks)
         console.log("ITEMS", items)
         console.log(itemIds)
 
         items.map((item,index) => { 
             item.order = index
         })
-        this.props.changeTaskOrderOnBoard(this.state.taskListId, items)
 
         this.props.client.mutate({
             mutation: updateTaskListMutation,
@@ -106,6 +120,7 @@ class TaskList extends Component {
         }).catch((err) => {
             this.setState({error: err})
         })
+        this.props.changeTaskOrderOnBoard(this.state.taskListId, items)
     }
 
     render() { 
@@ -128,7 +143,7 @@ class TaskList extends Component {
                                 {(provided) => (
                                     <ul className="task-cards-ul" {...provided.droppableProps} ref={provided.innerRef}>
                                     {    
-                                        _.sortBy(this.state.tasks, "order").map((task, index) => {
+                                        this.state.tasks.map((task, index) => {
                                             return(
                                                 <Draggable key={task.id} draggableId={task.id} index={index}>
                                                     {(provided) => (

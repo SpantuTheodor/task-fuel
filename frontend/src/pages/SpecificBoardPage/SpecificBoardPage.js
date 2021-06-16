@@ -55,7 +55,6 @@ class SpecificBoardPage extends Component {
 
     changeTaskOrderOnBoard(taskListObjectId, tasksArray){
         let boardObjectCopy = JSON.parse(JSON.stringify(this.state.boardObject))
-        
         let index = boardObjectCopy.taskLists.findIndex(taskList => taskList.id === taskListObjectId)
         boardObjectCopy.taskLists[index].tasks = tasksArray
         this.setState({boardObject: boardObjectCopy})

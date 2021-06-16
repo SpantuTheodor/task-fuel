@@ -35,7 +35,6 @@ class SpecificTaskPage extends Component {
         if(!this.props.location.search){
             this.getTaskById()
         }
-        console.log(this.state)
     }
 
     getTaskById() {
@@ -63,9 +62,6 @@ class SpecificTaskPage extends Component {
         if (this.state.error) {
             throw this.state.error;
         }
-
-        
-        console.log()
         
         return ( 
             <div className="specific-task-page-container">

@@ -34,6 +34,7 @@ class TasksGrid extends Component {
                 <div className="task-lists-container">
                     {
                         this.state.boardObject === null ? <p> No tasks to display </p> : this.state.boardObject.taskLists.map((taskList, index) => {
+                            
                             return(
                                 <TaskList 
                                     key={taskList.id} 
