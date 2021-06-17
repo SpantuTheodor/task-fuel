@@ -101,9 +101,9 @@ class TaskList extends Component {
         const [reorderedItem] = items.splice(result.source.index, 1)
         items.splice(result.destination.index, 0, reorderedItem)
         console.log(items)
-        let itemIds = items.map((item) => {
-            return item.id
-        })
+        let itemIds = items.map((item) => (
+            item.id
+        ))
         console.log("ITEMS", items)
         console.log(itemIds)
 

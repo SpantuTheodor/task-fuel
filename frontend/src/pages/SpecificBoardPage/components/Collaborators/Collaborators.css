@@ -11,3 +11,27 @@
     margin:auto;
     color: #707070;
 }
+
+.add-user-modal{
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top:50%;
+    left:50%;
+    z-index: 200;
+    width: 290px;
+    height:50px;
+    background-color: white;
+    border-radius:10px;
+}
+
+.add-user-button{
+    display: inline-block;
+    margin:auto;
+    color: #707070;
+}
+
+.add-user-button:hover{
+    color: #000000;
+}

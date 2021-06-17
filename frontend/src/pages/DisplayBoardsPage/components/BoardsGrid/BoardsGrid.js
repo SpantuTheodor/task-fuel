@@ -8,7 +8,7 @@ import BoardCard from "../BoardCard/BoardCard"
 import React, { Component } from "react"
 import { withApollo } from "react-apollo"
 import { Link } from 'react-router-dom'
-
+import _ from "lodash"
 
 class BoardsGrid extends Component {
 
@@ -120,7 +120,17 @@ class BoardsGrid extends Component {
                     </div>
                         
                 <h1> Owned Boards </h1>
-                <div className="owned-board-cards-container"> No boards to display </div>
+                <div className="board-cards-container"> 
+                    {
+                        this.state.boards === [] ? <p> No boards to display </p> : this.state.boards.filter((board) => board.owner.name === this.props.username).map(board => {
+                            return(
+                                <Link key={board.id} to={`/${this.state.username}/board/${board.id}`} className="board-card-anchor">
+                                    <BoardCard boardId={board.id} name={board.name} tasks={board.tasks} owner={board.owner} deleteBoardCard={this.props.deleteBoardCard} />
+                                </Link>
+                            )
+                        })
+                    }
+                </div>
 
             </div>
         )        

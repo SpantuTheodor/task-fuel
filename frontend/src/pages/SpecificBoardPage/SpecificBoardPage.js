@@ -105,7 +105,7 @@ class SpecificBoardPage extends Component {
                     <div className="passepartout" ref={this.passepartoutRef}> </div>
                     
                     <div id="left-side-container">
-                        <Collaborators boardObject={this.state.boardObject} />
+                        <Collaborators boardObject={this.state.boardObject} changePassepartoutVisibility={this.changePassepartoutVisibility} />
                         <Log boardId={this.state.boardId} />
                     </div>
                     

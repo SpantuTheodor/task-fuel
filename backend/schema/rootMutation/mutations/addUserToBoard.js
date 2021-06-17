@@ -8,10 +8,11 @@ const {
 const _ = require('lodash');
 
 const Board = require('../../../models/board.js')
-const User = require('../../../models/user.js')
+const User = require('../../../models/user.js');
+const { UserType } = require("../../objectTypes.js");
 
 const addUserToBoardMutation = {
-    type: GraphQLBoolean,
+    type: UserType,
     args: {
         boardId: {
             type: GraphQLID
@@ -22,24 +23,25 @@ const addUserToBoardMutation = {
     },
     async resolve(parent, args, req) {
 
-        if(!req.isAuthenticated){
-            throw new Error('Unauthenticated')
-        }
 
         User.find({name: args.userName}).then(async (res) => {
 
-            console.log(res[0]._id)
+            if(res.length){
+                console.log(res[0]._id)
+                await Board.updateOne({
+                    '_id': args.boardId
+                }, { $push: {userIds: res[0]._id }})
+                
+        
+                await User.updateOne({
+                    '_id': res[0]._id
+                }, { $push: {boardIds: args.boardId }})      
 
-            
-            await Board.updateOne({
-                '_id': args.boardId
-            }, { $push: {userIds: res[0]._id }}, { upsert: true })
-            
-    
-            await User.updateOne({
-                '_id': res[0]._id
-            }, { $push: {boardIds: args.boardId }}, { upsert: true })      
-            
+                return true
+
+            } else {
+                return false
+            }
         })
     }
 }
