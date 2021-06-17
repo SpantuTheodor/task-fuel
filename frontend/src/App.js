@@ -7,6 +7,7 @@ import DisplayBoardsPage from './pages/DisplayBoardsPage/DisplayBoardsPage'
 import SpecificBoardPage from './pages/SpecificBoardPage/SpecificBoardPage'
 import SpecificTaskPage from './pages/SpecificTaskPage/SpecificTaskPage'
 import FallbackPage from './pages/FallbackPage/FallbackPage';
+import ErrorBoundary from './shared/components/ErrorBoundary/ErrorBoundary'
 
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
@@ -28,21 +29,9 @@ const authLink = setContext((_, { headers }) => {
   }
 });
 
-const defaultOptions: DefaultOptions = {
-  watchQuery: {
-    fetchPolicy: 'no-cache',
-    errorPolicy: 'ignore',
-  },
-  query: {
-    fetchPolicy: 'no-cache',
-    errorPolicy: 'all',
-  },
-}
-
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
-  defaultOptions: defaultOptions
+  cache: new InMemoryCache()
 });
 
 class App extends Component{
@@ -88,19 +77,21 @@ class App extends Component{
       <Router>
         <ApolloProvider client = {client}>
           <AuthenticationContext.Provider value={{accessToken: this.state.accessToken, userId: this.state.userId, username: this.state.username, logIn: this.logIn, logOut: this.logOut}}>
-            <div id="app-div">
-              <Switch>
-                {!this.state.token && <Redirect from="/" to="/register" exact />}
-                <Route exact path="/:username/boards" component={({match}) => { return(<DisplayBoardsPage match={match} />)}} />
-                <Route exact path="/:username/board/:boardId" component={({match}) => { return(<SpecificBoardPage match={match} />)}} />
-                <Route exact path="/:username/board/:boardId/task/:taskId" component={({match}) => { return(<SpecificTaskPage match={match} />)}} />
-                <Route exact path="/login" component={LoginPage} />
-                <Route exact path="/register" component={RegisterPage} />
-                <Route exact path="/fallback" component={FallbackPage} />
-                <Route exact path="/:hashed" component={SpecificTaskPage} />
-                <Route path ="/" component={SpecificBoardPage} />
-              </Switch>
-            </div>
+            <ErrorBoundary>
+              <div id="app-div">
+                <Switch>
+                  {!this.state.token && <Redirect from="/" to="/register" exact />}
+                  <Route exact path="/:username/boards" component={({match}) => { return(<DisplayBoardsPage match={match} />)}} />
+                  <Route exact path="/:username/board/:boardId" component={({match}) => { return(<SpecificBoardPage match={match} />)}} />
+                  <Route exact path="/:username/board/:boardId/task/:taskId" component={({match}) => { return(<SpecificTaskPage match={match} />)}} />
+                  <Route exact path="/login" component={LoginPage} />
+                  <Route exact path="/register" component={RegisterPage} />
+                  <Route exact path="/fallback" component={FallbackPage} />
+                  <Route exact path="/:hashed" component={SpecificTaskPage} />
+                  <Route path ="/" component={SpecificBoardPage} />
+                </Switch>
+              </div>
+            </ErrorBoundary>
           </AuthenticationContext.Provider>
         </ApolloProvider>
       </Router>

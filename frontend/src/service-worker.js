@@ -95,11 +95,7 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', async (event) => {
   let graphQLRegularExpression = new RegExp('graphql')
   if (event.request.method === 'POST' && graphQLRegularExpression.test(event.request.url)) {
-    try{
       await event.respondWith(getResponseByQueryType(event))
-    }catch(err){
-      console.log("error: ", err)
-    }
   }
 })
 
@@ -114,8 +110,8 @@ async function getResponseByQueryType(event) {
         return response;
       })
       .catch((err) => {
-        console.error(err);
-        return cachedResponse
+        console.log(cachedResponse)
+        if (cachedResponse) { return cachedResponse } else {throw err }
       });
     console.log(1)
     return fetchPromise
